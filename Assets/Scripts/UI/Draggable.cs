@@ -8,7 +8,8 @@ public abstract class Draggable : Selectable,IPointerEnterHandler,IPointerExitHa
 {
     protected override bool GetIsInteractable()
     {
-        return m_canBeSelected && !s_IsSomethingSelected;
+        return (m_canBeSelected && !s_IsSomethingSelected)
+            ||(s_IsSomethingSelected && m_isSelected);
     }
 
     protected override void Interact()
@@ -35,9 +36,10 @@ public abstract class Draggable : Selectable,IPointerEnterHandler,IPointerExitHa
     }
     private IEnumerator Drag()
     {
+        transform.parent.parent = null;
         while (m_isSelected)
         {
-            transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.parent.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             yield return null;
         }
     }

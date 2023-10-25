@@ -6,11 +6,12 @@ using UnityEngine.Tilemaps;
 
 public class ObjectDraggable : Draggable
 {
+    [SerializeField] private ObjectSlot slot;
     protected override void TryDrop()
     {
         //tries to find anything that would overlap with the thing
-        RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition), 5000, LayerMask.GetMask("Map"));
-        if (Hit.collider != null)
+        RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition), 5000,~LayerMask.GetMask("Mechanisms"));
+        if (Hit.collider != null && Hit.collider.gameObject.layer == LayerMask.NameToLayer("Map"))
         {
             ContactFilter2D filter = new ContactFilter2D();
             filter.useTriggers = false;
@@ -20,14 +21,14 @@ public class ObjectDraggable : Draggable
             if (FilteredResult.Count <= 0)// we didn't find anything overlapping so we can place the thing down
             {
                 //finds closest tile and sets position of this object to that tile
-                Tilemap map = Hit.collider.GetComponent<Tilemap>();
+                Tilemap map = MapManager.instance.m_placeableMap;
                 Vector3Int closestCellPos = map.WorldToCell(transform.parent.position); // parent is pivot point
-                transform.position = map.CellToWorld(closestCellPos);
+                transform.parent.position = map.CellToWorld(closestCellPos);
             }
         }
         else // we dropped it out of the buildable area
         {
-            Destroy(gameObject);
+            slot.TryReturnObject(this);
         }
         s_IsSomethingSelected = false;
         m_isSelected = false;
