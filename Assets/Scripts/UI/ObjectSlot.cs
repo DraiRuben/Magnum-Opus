@@ -7,6 +7,12 @@ public class ObjectSlot : MonoBehaviour
     [SerializeField] private bool m_canReplenish = true;
     [SerializeField] private GameObject m_objectPrefab;
 
+    private SpriteRenderer m_sprite;
+    private void Awake()
+    {
+        m_sprite = GetComponent<SpriteRenderer>();
+    }
+
     public void UpdateContent(bool objectSelectionExit = false)
     {
         if(objectSelectionExit && m_canReplenish)
@@ -22,6 +28,7 @@ public class ObjectSlot : MonoBehaviour
         {
             obj.transform.parent.parent = transform;
             obj.transform.parent.localPosition = Vector3.zero;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = m_sprite.sortingOrder + 1;
         }
         else
         {

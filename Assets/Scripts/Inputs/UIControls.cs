@@ -14,6 +14,10 @@ public class UIControls : MonoBehaviour
             {
                 Hit.collider.GetComponent<Selectable>().TryInteract(ctx.canceled);
             }
+            else
+            {
+                MapManager.instance.m_unselectAll = true;
+            }
         }
     }
 }
