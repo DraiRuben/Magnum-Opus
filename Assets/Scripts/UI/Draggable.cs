@@ -52,6 +52,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
     }
     protected IEnumerator Drag()
     {
+        InventoryManager.instance.StopScroller(); //delays the method call
         transform.parent.parent = null;
         m_posBeforeDrag   = transform.parent.position;
         m_scaleBeforeDrag = transform.parent.localScale;

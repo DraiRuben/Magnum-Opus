@@ -11,6 +11,7 @@ public class ObjectDraggable : Draggable
     [SerializeField] private ObjectSlot slot;
     protected override void TryDrop()
     {
+
         //finds if object was dropped out of bounds or not
         if (!UIDragHelper.s_isOnUIElement)
         {
