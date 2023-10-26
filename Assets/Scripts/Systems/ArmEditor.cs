@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using static UnityEngine.GraphicsBuffer;
 
 public class ArmEditor : Draggable
 {
@@ -51,19 +52,37 @@ public class ArmEditor : Draggable
         MapManager.instance.m_armZonesMap.transform.position = transform.parent.parent.position;
         SaveTransform();
         Tilemap validZones = MapManager.instance.m_armZonesMap;
+        Quaternion newRotation = transform.parent.parent.rotation;
+        Quaternion oldRotation = newRotation;
+        Vector3Int newValidTile = new();
+        Vector3Int oldValidTile = new();
+
+        float slerpTimer = 1f;
         while (s_isSomethingDragging)
         {
             Vector3Int tilePos = validZones.WorldToCell((Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-            var validTile = validZones.GetTile(tilePos);
 
-            if(validTile != null)
+            if (slerpTimer < 1f)
             {
-                var validTileWorldPos = validZones.CellToWorld(tilePos);
-                //always rotate first then move after, or it will go apeshit
-                transform.parent.parent.right = (validTileWorldPos - transform.parent.parent.position).normalized;
-                transform.parent.position = validTileWorldPos;
+                transform.parent.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, slerpTimer);
+                slerpTimer +=5.5f*Time.deltaTime;
+            }
+            if (validZones.GetTile(tilePos)!=null  
+                && tilePos != newValidTile)
+            {
+                newValidTile = tilePos;
+                oldRotation = transform.parent.parent.rotation;
+                slerpTimer = 0f;
+
+                Vector3 validTileWorldPos = validZones.CellToWorld(tilePos);
+                Vector3 direction = validTileWorldPos - transform.parent.parent.position;
+
+                newRotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+                transform.parent.position = transform.parent.parent.position + Vector2.Distance(validTileWorldPos, transform.parent.parent.position) * transform.parent.parent.right;
                 transform.parent.position += Vector3.back;  //offset z by 2 so that the raycast on mouse relase may always hit this one first
                 SetArmLength(Mathf.RoundToInt(Vector3Int.Distance(tilePos, validZones.WorldToCell((Vector2)transform.parent.parent.position))));
+                oldValidTile = newValidTile;
+
             }
             
             yield return null;
