@@ -9,9 +9,11 @@ public class ObjectDraggable : Draggable
 {
     [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
     [SerializeField] private ObjectSlot slot;
-    protected override void TryDrop()
-    {
 
+    protected override IEnumerator TryDrop()
+    {
+        InventoryManager.instance.m_scroller.enabled = true;
+        m_isInUI = false;
         //finds if object was dropped out of bounds or not
         if (!UIDragHelper.s_isOnUIElement)
         {
@@ -22,8 +24,8 @@ public class ObjectDraggable : Draggable
                 Tilemap map = MapManager.instance.m_placeableMap;
                 Vector3Int closestCellPos = map.WorldToCell(transform.parent.position); // parent is pivot point
                 Vector3 closestCellWorldPos = map.CellToWorld(closestCellPos);
-                transform.parent.position = (Vector2) closestCellWorldPos; //discards z
-
+                transform.parent.position = (Vector2) closestCellWorldPos; //discards z so that it stays at 0
+                yield return new WaitForFixedUpdate();
                 ContactFilter2D filter = new ContactFilter2D();
                 filter.useTriggers = false;
                 List<Collider2D> results = new();
@@ -35,11 +37,18 @@ public class ObjectDraggable : Draggable
                     if (m_dropLayerOrder >= 0)
                     {
                         m_sprite.sortingOrder = m_dropLayerOrder;
-
+                        if (m_toActivateOnDrop != null) //sometimes we might want to activate things on drop like the arm editor
+                        {
+                            foreach (GameObject _toActivate in m_toActivateOnDrop)
+                            {
+                                _toActivate.SetActive(true);
+                            }
+                        }
                     }
                 }
                 else // we dropped it on another object
                 {
+                    m_sprite.sortingOrder = m_dropLayerOrder;
                     m_initialDrag = true;
                     InvalidateDrop();
                 }
@@ -52,12 +61,13 @@ public class ObjectDraggable : Draggable
         }
         else // we dropped it on a UI element
         {
-            m_initialDrag = false;
-            InvalidateDrop();
+            m_initialDrag = false; 
+            s_IsSomethingSelected = false;
+            m_isSelected = false;
+            InvalidateDrop(); 
         }
 
-        s_IsSomethingSelected = false;
-        m_isSelected = false;
+        
     }
     private void InvalidateDrop()
     {
@@ -73,7 +83,6 @@ public class ObjectDraggable : Draggable
         {
             m_initialDrag = true;
             slot.TryReturnObject(this);
-
         }
     }
 }

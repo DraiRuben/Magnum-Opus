@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    [SerializeField] private ScrollRect m_scroller;
+    public ScrollRect m_scroller;
     public GameObject m_armPreviewer;
     private Vector3 m_poolPos = new(0, -50000, 0);
     private void Awake()
@@ -22,17 +22,6 @@ public class InventoryManager : MonoBehaviour
         _toReturn.transform.parent = transform;
         _toReturn.SetActive(false);
     }
-    public void StopScroller()
-    {
-        Invoke(nameof(StopScrollerDelayed), 0.1f); //calls method delayed
-    }
-    private void StopScrollerDelayed()
-    {
-        //creates fake data to stop dragging
-        var forceEndDragData = new PointerEventData(EventSystem.current)
-        {
-            button = PointerEventData.InputButton.Left
-        };
-        m_scroller.OnEndDrag(forceEndDragData);
-    }
+
+
 }

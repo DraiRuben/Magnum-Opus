@@ -26,9 +26,13 @@ public class ObjectSlot : MonoBehaviour
         // so that it comes back to the slot instead of disappearing indefinitely
         if (transform.childCount <= 0) 
         {
-            obj.transform.parent.parent = transform;
+            obj.transform.parent.parent = transform.parent;
+            obj.transform.parent.localScale = Vector3.one;
             obj.transform.parent.localPosition = Vector3.zero;
             obj.GetComponent<SpriteRenderer>().sortingOrder = m_sprite.sortingOrder + 1;
+            MapManager.instance.m_unselectAll = true;
+            obj.m_isInUI = true;
+            
         }
         else
         {

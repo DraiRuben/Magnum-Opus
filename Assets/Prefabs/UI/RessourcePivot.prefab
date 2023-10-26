@@ -154,6 +154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 12
+  m_toActivateOnDrop: []
+  m_scaleOutOfUI: {x: 1, y: 1, z: 1}
+  m_toActivateOnSelect: []
   m_dropLayerOrder: 3
   slot: {fileID: 0}
 --- !u!1 &4521197710835868697

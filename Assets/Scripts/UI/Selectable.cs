@@ -17,9 +17,9 @@ public abstract class Selectable : MonoBehaviour
     {
         MapManager.instance.UnselectAllEvent.AddListener(Unselect);
     }
-    private void Unselect() 
+    protected virtual void Unselect() 
     { 
-        m_isSelected = false; 
+        m_isSelected = false;
     }
     public void TryInteract(bool releasedInput)
     {
