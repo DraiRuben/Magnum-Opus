@@ -11013,6 +11013,10 @@ PrefabInstance:
       propertyPath: slot
       value: 
       objectReference: {fileID: 718236543}
+    - target: {fileID: 5604357877570430365, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
+      propertyPath: m_dropLayerOrder
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -48,7 +48,7 @@ public class ObjectDraggable : Draggable
                 }
                 else // we dropped it on another object
                 {
-                    m_sprite.sortingOrder = m_dropLayerOrder;
+                    m_sprite.sortingOrder = m_dragLayerOrder;
                     m_initialDrag = true;
                     InvalidateDrop();
                 }

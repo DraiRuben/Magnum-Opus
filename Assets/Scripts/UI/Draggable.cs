@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private int m_dragLayerOrder = 3; //if it's set to -1 that means we don't change the layer when dragging
+    [SerializeField] protected int m_dragLayerOrder = 3; //if it's set to -1 that means we don't change the layer when dragging
     [SerializeField] protected List<GameObject> m_toActivateOnDrop;
     [SerializeField] protected Vector3 m_scaleOutOfUI = Vector3.one;
     public bool m_isInUI = true;

@@ -60,7 +60,7 @@ public class ArmEditor : Draggable
             {
                 var validTileWorldPos = validZones.CellToWorld(tilePos);
                 //always rotate first then move after, or it will go apeshit
-                transform.parent.parent.right = (validTileWorldPos - transform.parent.parent.position).normalized; 
+                transform.parent.parent.right = (validTileWorldPos - transform.parent.parent.position).normalized;
                 transform.parent.position = validTileWorldPos;
                 transform.parent.position += Vector3.back;  //offset z by 2 so that the raycast on mouse relase may always hit this one first
                 SetArmLength(Mathf.RoundToInt(Vector3Int.Distance(tilePos, validZones.WorldToCell((Vector2)transform.parent.parent.position))));

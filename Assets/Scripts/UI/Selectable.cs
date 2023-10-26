@@ -24,7 +24,12 @@ public abstract class Selectable : MonoBehaviour
     public void TryInteract(bool releasedInput)
     {
         //don't want it to interact on mouse release if we didn't select the thing prior to this
-        if (releasedInput && !m_isSelected) return;
+        if (releasedInput && !m_isSelected && s_IsSomethingSelected)
+        {
+            MapManager.instance.m_unselectAll = true;
+            return;
+        }
+        else if (releasedInput && !m_isSelected) return;
 
         if (GetIsInteractable())
         {
