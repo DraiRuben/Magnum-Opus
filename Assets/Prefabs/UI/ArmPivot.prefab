@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.12, y: -0.03, z: 0}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1988373349775868170}
@@ -280,8 +280,8 @@ Transform:
   m_GameObject: {fileID: 3563596360898840224}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.673, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalPosition: {x: 0.604, y: -0.029, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1988373349775868170}
@@ -399,8 +399,8 @@ Transform:
   m_GameObject: {fileID: 5614348439800840399}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.213, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalPosition: {x: 1.099, y: -0.029, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1988373349775868170}
@@ -628,5 +628,6 @@ MonoBehaviour:
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
   m_armBase: {fileID: 5604357877570430365}
+  m_smallArm: {fileID: 2040008945179687933}
   m_mediumArm: {fileID: 3563596360898840224}
   m_longArm: {fileID: 5614348439800840399}

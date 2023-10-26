@@ -22642,6 +22642,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1512803138}
     m_Modifications:
+    - target: {fileID: 710375540820848727, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1988373349775868170, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
@@ -22662,6 +22666,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4449507585615672211, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4521197710835868697, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
       propertyPath: m_Name
       value: ArmPivot
@@ -22670,6 +22678,18 @@ PrefabInstance:
       propertyPath: slot
       value: 
       objectReference: {fileID: 1512803139}
+    - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_scaleOutOfUI.x
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_scaleOutOfUI.y
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_scaleOutOfUI.z
+      value: 1.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
       propertyPath: m_toActivateOnDrop.Array.size
       value: 1
@@ -22873,16 +22893,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 0, y: 0, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   - first: {x: 1, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -22975,13 +22985,13 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data: {fileID: 11400000, guid: 24ee153fb47985d4f924d8f9f0797476, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data: {fileID: 21300000, guid: 895ab619595428e468f3464237be6a77, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data:
       e00: 1
       e01: 0
@@ -23000,7 +23010,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 19
+  - m_RefCount: 18
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
