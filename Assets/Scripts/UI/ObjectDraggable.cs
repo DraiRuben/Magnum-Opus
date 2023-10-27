@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 public class ObjectDraggable : Draggable
 {
     [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
-    [SerializeField] private ObjectSlot m_slot;
+    public ObjectSlot m_slot;
 
     protected override IEnumerator TryDrop()
     {
@@ -24,13 +24,15 @@ public class ObjectDraggable : Draggable
                 Tilemap map = MapManager.instance.m_placeableMap;
                 Vector3Int closestCellPos = map.WorldToCell(transform.parent.position); // parent is pivot point
                 Vector3 closestCellWorldPos = map.CellToWorld(closestCellPos);
-                transform.parent.position = (Vector2) closestCellWorldPos; //discards z so that it stays at 0
-                yield return new WaitForFixedUpdate();
+                transform.parent.position = (Vector2)closestCellWorldPos; //discards z so that z stays at 0
+
+                yield return new WaitForFixedUpdate(); //waits for collider to update its position
+
                 ContactFilter2D filter = new ContactFilter2D();
                 filter.useTriggers = false;
                 List<Collider2D> results = new();
                 Physics2D.OverlapCollider(GetComponent<Collider2D>(), filter, results);
-                var FilteredResult = results.Where(x => x.CompareTag("Mechanisms")).ToList();
+                List<Collider2D> FilteredResult = results.Where(x => x.CompareTag("Mechanisms")).ToList();
 
                 if (FilteredResult.Count <= 0)// we didn't find anything overlapping so we can place the thing down without resetting anything
                 {
@@ -48,7 +50,7 @@ public class ObjectDraggable : Draggable
                 }
                 else // we dropped it on another object
                 {
-                    if(m_isInUI)
+                    if (m_isInUI)
                         m_sprite.sortingOrder = m_dragLayerOrder;
                     else
                         m_sprite.sortingOrder = m_dropLayerOrder;
@@ -65,15 +67,19 @@ public class ObjectDraggable : Draggable
         }
         else // we dropped it on a UI element
         {
-            m_initialDrag = false; 
+            m_initialDrag = false;
             s_IsSomethingSelected = false;
             m_isSelected = false;
-            InvalidateDrop(); 
+            InvalidateDrop();
         }
     }
     protected override IEnumerator Drag()
     {
-        m_slot.TryRegenObject();
+        if (m_isInUI)
+        {
+            m_slot.TryRegenObject();
+
+        }
         return base.Drag();
 
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,10 +5,10 @@ public class UIControls : MonoBehaviour
 {
     public void Click(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed || ctx.canceled)
+        if (ctx.performed || ctx.canceled)
         {
-            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), float.PositiveInfinity, LayerMask.GetMask("Mechanisms","Action"));
-            if(Hit.collider != null)
+            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), float.PositiveInfinity, LayerMask.GetMask("Mechanisms", "Action"));
+            if (Hit.collider != null)
             {
                 Hit.collider.GetComponent<Selectable>().TryInteract(ctx.canceled);
             }

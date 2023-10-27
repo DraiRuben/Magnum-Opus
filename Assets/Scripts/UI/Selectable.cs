@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class Selectable : MonoBehaviour
 {
@@ -17,8 +14,8 @@ public abstract class Selectable : MonoBehaviour
     {
         MapManager.instance.UnselectAllEvent.AddListener(Unselect);
     }
-    protected virtual void Unselect() 
-    { 
+    protected virtual void Unselect()
+    {
         m_isSelected = false;
     }
     public void TryInteract(bool releasedInput)

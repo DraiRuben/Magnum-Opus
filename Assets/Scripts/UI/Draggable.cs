@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -46,7 +45,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
                 foreach (GameObject _toActivate in m_toActivateOnSelect)
                 {
                     _toActivate.SetActive(true);
-                    _toActivate.TryGetComponent<SpriteRenderer>(out var comp);
+                    _toActivate.TryGetComponent<SpriteRenderer>(out SpriteRenderer comp);
 
                     if (comp != null)
                     {
@@ -74,6 +73,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
     }
     protected virtual IEnumerator Drag()
     {
+
         InventoryManager.instance.m_scroller.enabled = false;
         transform.parent.parent = null;
         transform.parent.localScale = m_scaleOutOfUI;

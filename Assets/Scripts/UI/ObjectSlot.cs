@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectSlot : MonoBehaviour
@@ -15,16 +13,25 @@ public class ObjectSlot : MonoBehaviour
 
     public void TryRegenObject()
     {
-        if(m_canReplenish)
+        if (m_canReplenish && transform.childCount < 2)
         {
-            Instantiate(m_objectPrefab,transform);
+            GameObject spawned = Instantiate(m_objectPrefab, transform);
+
+            if(spawned.transform.GetChild(0).TryGetComponent<ActionDraggable>(out var actionDraggable))
+            {
+                actionDraggable.m_slot = this;
+            }
+            else if(spawned.transform.GetChild(0).TryGetComponent<ObjectDraggable>(out var objectDraggable))
+            {
+                objectDraggable.m_slot = this;
+            }
         }
     }
     public void TryReturnObject(Draggable obj)
     {
         // called on object drop out of bounds
         // so that it comes back to the slot instead of disappearing indefinitely
-        if (transform.childCount <= 0) 
+        if (transform.childCount <= 0)
         {
             obj.transform.parent.parent = transform.parent;
             obj.transform.parent.localScale = Vector3.one;
@@ -32,7 +39,7 @@ public class ObjectSlot : MonoBehaviour
             obj.GetComponent<SpriteRenderer>().sortingOrder = m_sprite.sortingOrder + 1;
             MapManager.instance.m_unselectAll = true;
             obj.m_isInUI = true;
-            
+
         }
         else
         {

@@ -12411,6 +12411,10 @@ PrefabInstance:
       propertyPath: slot
       value: 
       objectReference: {fileID: 1591866420}
+    - target: {fileID: 6159587851383687640, guid: febf4af62e4665c45ab15323dc96e06d, type: 3}
+      propertyPath: m_slot
+      value: 
+      objectReference: {fileID: 1591866420}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27968,6 +27972,7 @@ GameObject:
   - component: {fileID: 1970705111}
   - component: {fileID: 1970705112}
   - component: {fileID: 1970705113}
+  - component: {fileID: 1970705114}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -28023,6 +28028,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_scroller: {fileID: 1456491128}
   m_armPreviewer: {fileID: 0}
+--- !u!114 &1970705114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970705110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &2013173665
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,13 +14,13 @@ public class TimelineManager : MonoBehaviour
     }
     public void RegisterNewActionnableObject(ObjectDraggable obj)
     {
-        var comp = Instantiate(LinePrefab, transform).GetComponent<ActionLine>();
+        ActionLine comp = Instantiate(LinePrefab, transform).GetComponent<ActionLine>();
         Lines.Add(comp);
         comp.m_actionTarget = obj;
     }
     public void RemoveActionnableObject(ObjectDraggable obj)
     {
-        var _toRemove = Lines.Find(x=>x.m_actionTarget == obj);
+        ActionLine _toRemove = Lines.Find(x => x.m_actionTarget == obj);
         if (_toRemove != null)
         {
             Lines.Remove(_toRemove);
@@ -31,11 +30,11 @@ public class TimelineManager : MonoBehaviour
         }
         UpdateLineNumber();
     }
-    private void UpdateLineNumber() 
+    private void UpdateLineNumber()
     {
-        for(int i=0;i<Lines.Count; i++)
+        for (int i = 0; i < Lines.Count; i++)
         {
-            Lines[i].LineNumber = i+1;
+            Lines[i].LineNumber = i + 1;
         }
     }
 }

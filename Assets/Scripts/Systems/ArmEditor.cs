@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using static UnityEngine.GraphicsBuffer;
 
 public class ArmEditor : Draggable
 {
@@ -16,26 +13,26 @@ public class ArmEditor : Draggable
 
     private void SetArmLength(int value)
     {
-        m_armLength = Mathf.Clamp(value,1,3);
+        m_armLength = Mathf.Clamp(value, 1, 3);
         //lengthen or shorten arm
-        m_smallArm .enabled = m_armLength == 1; //doesn't disable gameobject since this the draggable should still be usable
+        m_smallArm.enabled = m_armLength == 1; //doesn't disable gameobject since this the draggable should still be usable
         m_mediumArm.SetActive(m_armLength == 2);
-        m_longArm  .SetActive(m_armLength == 3);
+        m_longArm.SetActive(m_armLength == 3);
 
-        
+
     }
     private void OnDisable()
     {
-        if(MapManager.instance != null && MapManager.instance.m_armZonesMap!=null)
-        MapManager.instance.m_armZonesMap.transform.position = new(0,50000);
+        if (MapManager.instance != null && MapManager.instance.m_armZonesMap != null)
+            MapManager.instance.m_armZonesMap.transform.position = new(0, 50000);
     }
     protected override IEnumerator TryDrop()
     {
-        if(m_toActivateOnDrop!=null)
-        foreach (GameObject _toActivate in m_toActivateOnDrop)
-        {
-            _toActivate.SetActive(true);
-        }
+        if (m_toActivateOnDrop != null)
+            foreach (GameObject _toActivate in m_toActivateOnDrop)
+            {
+                _toActivate.SetActive(true);
+            }
         MapManager.instance.m_armZonesMap.transform.position = new(0, 50000);
         yield return null;
     }
@@ -64,9 +61,9 @@ public class ArmEditor : Draggable
             if (slerpTimer < 1f)
             {
                 transform.parent.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, slerpTimer);
-                slerpTimer +=5.5f*Time.deltaTime;
+                slerpTimer += 5.5f * Time.deltaTime;
             }
-            if (validZones.GetTile(tilePos)!=null  
+            if (validZones.GetTile(tilePos) != null
                 && tilePos != newValidTile)
             {
                 newValidTile = tilePos;
@@ -82,7 +79,7 @@ public class ArmEditor : Draggable
                 SetArmLength(Mathf.RoundToInt(Vector3Int.Distance(tilePos, validZones.WorldToCell((Vector2)transform.parent.parent.position))));
 
             }
-            
+
             yield return null;
         }
         //finishes rotation if we stopped dragging midway
