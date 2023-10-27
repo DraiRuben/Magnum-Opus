@@ -160,7 +160,7 @@ MonoBehaviour:
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
   m_dropLayerOrder: 3
-  slot: {fileID: 0}
+  m_slot: {fileID: 0}
 --- !u!1 &4521197710835868697
 GameObject:
   m_ObjectHideFlags: 0

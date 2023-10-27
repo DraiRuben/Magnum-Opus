@@ -7,13 +7,16 @@ using UnityEngine;
 public class ActionLine : MonoBehaviour
 {
     [HideInInspector] public ObjectDraggable m_actionTarget;
-    [HideInInspector] public List<Order> m_orders;
+    [HideInInspector] public List<Order> m_orders = new();
 
     [SerializeField] private TextMeshProUGUI m_lineIndexText;
     private int m_lineNumber;
     private void Start()
     {
-        m_orders = new List<Order>(transform.childCount - 1); //-1 since we don't count the number displayer
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            m_orders.Add(Order.Empty);
+        }
     }
     public int LineNumber
     {

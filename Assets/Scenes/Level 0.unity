@@ -13297,18 +13297,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 718236542}
     m_Modifications:
     - target: {fileID: 1988373349775868170, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 1988373349775868170, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 1988373349775868170, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 1988373349775868170, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -13348,10 +13336,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1988373349775868170, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4521197710835868697, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
       propertyPath: m_Name
       value: RessourcePivot
@@ -13361,9 +13345,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 718236543}
     - target: {fileID: 5604357877570430365, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
-      propertyPath: m_dropLayerOrder
-      value: 3
-      objectReference: {fileID: 0}
+      propertyPath: m_slot
+      value: 
+      objectReference: {fileID: 718236543}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27633,6 +27617,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
       propertyPath: slot
+      value: 
+      objectReference: {fileID: 1512803139}
+    - target: {fileID: 5604357877570430365, guid: 1f0ba0bef5e66d349891004226d7980f, type: 3}
+      propertyPath: m_slot
       value: 
       objectReference: {fileID: 1512803139}
     m_RemovedComponents: []

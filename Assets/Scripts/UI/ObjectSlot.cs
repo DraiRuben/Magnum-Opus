@@ -13,9 +13,9 @@ public class ObjectSlot : MonoBehaviour
         m_sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void UpdateContent(bool objectSelectionExit = false)
+    public void TryRegenObject()
     {
-        if(objectSelectionExit && m_canReplenish)
+        if(m_canReplenish)
         {
             Instantiate(m_objectPrefab,transform);
         }
@@ -36,6 +36,7 @@ public class ObjectSlot : MonoBehaviour
         }
         else
         {
+
             Destroy(obj.transform.parent.gameObject);
         }
     }

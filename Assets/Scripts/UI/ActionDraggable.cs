@@ -32,8 +32,8 @@ public class ActionDraggable : Draggable
                     line.m_orders.Insert(cellIndex+1, m_order);
                 }
 
-                transform.parent = UIDragHelper.s_lastUIElementSetter.transform;
-                transform.localPosition = Vector3.zero;
+                transform.parent.parent = UIDragHelper.s_lastUIElementSetter.transform;
+                transform.parent.localPosition = Vector3.zero;
 
                 if (m_toActivateOnDrop != null) //sometimes we might want to activate things on drop like the arm editor
                 {

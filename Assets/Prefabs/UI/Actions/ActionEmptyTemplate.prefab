@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2122930634990249021}
   - component: {fileID: 6159587851383687640}
   m_Layer: 9
-  m_Name: Ressource
+  m_Name: ActionEmpty
   m_TagString: Mechanisms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

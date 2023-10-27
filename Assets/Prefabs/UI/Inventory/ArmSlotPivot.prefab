@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_canReplenish: 1
-  m_objectPrefab: {fileID: 4521197710835868697, guid: dea3c4f773946254b9823e623d5743ae, type: 3}
+  m_objectPrefab: {fileID: 4521197710835868697}
 --- !u!1 &4521197710835868697
 GameObject:
   m_ObjectHideFlags: 0

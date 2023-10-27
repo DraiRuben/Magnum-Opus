@@ -71,6 +71,12 @@ public class ObjectDraggable : Draggable
             InvalidateDrop(); 
         }
     }
+    protected override IEnumerator Drag()
+    {
+        m_slot.TryRegenObject();
+        return base.Drag();
+
+    }
     private void InvalidateDrop()
     {
         if (m_initialDrag)
