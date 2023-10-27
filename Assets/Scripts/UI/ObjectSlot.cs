@@ -20,7 +20,7 @@ public class ObjectSlot : MonoBehaviour
             Instantiate(m_objectPrefab,transform);
         }
     }
-    public void TryReturnObject(ObjectDraggable obj)
+    public void TryReturnObject(Draggable obj)
     {
         // called on object drop out of bounds
         // so that it comes back to the slot instead of disappearing indefinitely

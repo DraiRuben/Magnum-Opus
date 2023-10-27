@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 public class ObjectDraggable : Draggable
 {
     [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
-    [SerializeField] private ObjectSlot slot;
+    [SerializeField] private ObjectSlot m_slot;
 
     protected override IEnumerator TryDrop()
     {
@@ -70,8 +70,6 @@ public class ObjectDraggable : Draggable
             m_isSelected = false;
             InvalidateDrop(); 
         }
-
-        
     }
     private void InvalidateDrop()
     {
@@ -86,7 +84,7 @@ public class ObjectDraggable : Draggable
         else
         {
             m_initialDrag = true;
-            slot.TryReturnObject(this);
+            m_slot.TryReturnObject(this);
         }
     }
 }

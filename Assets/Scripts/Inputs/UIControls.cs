@@ -9,7 +9,7 @@ public class UIControls : MonoBehaviour
     {
         if(ctx.performed || ctx.canceled)
         {
-            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), float.PositiveInfinity, LayerMask.GetMask("Mechanisms"));
+            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), float.PositiveInfinity, LayerMask.GetMask("Mechanisms","Action"));
             if(Hit.collider != null)
             {
                 Hit.collider.GetComponent<Selectable>().TryInteract(ctx.canceled);

@@ -55,7 +55,6 @@ public class ArmEditor : Draggable
         Quaternion newRotation = transform.parent.parent.rotation;
         Quaternion oldRotation = newRotation;
         Vector3Int newValidTile = new();
-        Vector3Int oldValidTile = new();
 
         float slerpTimer = 1f;
         while (s_isSomethingDragging)
@@ -81,13 +80,18 @@ public class ArmEditor : Draggable
                 transform.parent.position = transform.parent.parent.position + Vector2.Distance(validTileWorldPos, transform.parent.parent.position) * transform.parent.parent.right;
                 transform.parent.position += Vector3.back;  //offset z by 2 so that the raycast on mouse relase may always hit this one first
                 SetArmLength(Mathf.RoundToInt(Vector3Int.Distance(tilePos, validZones.WorldToCell((Vector2)transform.parent.parent.position))));
-                oldValidTile = newValidTile;
 
             }
             
             yield return null;
         }
-
+        //finishes rotation if we stopped dragging midway
+        while (Quaternion.Angle(transform.parent.parent.rotation, newRotation) > 1f)
+        {
+            transform.parent.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, slerpTimer);
+            slerpTimer += 5.5f * Time.deltaTime;
+            yield return null;
+        }
         StartCoroutine(TryDrop());
     }
 }
