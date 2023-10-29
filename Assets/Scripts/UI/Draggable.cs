@@ -45,7 +45,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
                 foreach (GameObject _toActivate in m_toActivateOnSelect)
                 {
                     _toActivate.SetActive(true);
-                    _toActivate.TryGetComponent<SpriteRenderer>(out SpriteRenderer comp);
+                    _toActivate.TryGetComponent(out SpriteRenderer comp);
 
                     if (comp != null)
                     {
@@ -87,7 +87,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
         while (s_isSomethingDragging)
         {
             transform.parent.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) + offset;
-            transform.parent.position += Vector3.back;  //offset z by 1 so that the raycast on mouse relase may hit this one first
+            transform.parent.position += 2* Vector3.back;  //offset z by 2 so that the raycast on mouse relase may hit this one first
             yield return null;
         }
     }

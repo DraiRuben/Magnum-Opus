@@ -17,6 +17,7 @@ public class TimelineManager : MonoBehaviour
         ActionLine comp = Instantiate(LinePrefab, transform).GetComponent<ActionLine>();
         Lines.Add(comp);
         comp.m_actionTarget = obj;
+        comp.LineNumber = Lines.Count;
     }
     public void RemoveActionnableObject(ObjectDraggable obj)
     {
@@ -26,7 +27,7 @@ public class TimelineManager : MonoBehaviour
             Lines.Remove(_toRemove);
             // cool thing is that when the line gets destroyed,
             // the scroll rect automatically fills the empty space with lines below it
-            Destroy(_toRemove);
+            Destroy(_toRemove.gameObject);
         }
         UpdateLineNumber();
     }

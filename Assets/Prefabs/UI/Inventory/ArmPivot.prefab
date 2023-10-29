@@ -84,7 +84,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!60 &2122930634990249021
 PolygonCollider2D:
@@ -166,8 +166,9 @@ MonoBehaviour:
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect:
   - {fileID: 8941088587234842511}
+  m_canProgram: 1
   m_dropLayerOrder: 5
-  slot: {fileID: 0}
+  m_slot: {fileID: 0}
 --- !u!1 &2646947512241578747
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,7 +475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &743587986822208394
 Transform:
   m_ObjectHideFlags: 0

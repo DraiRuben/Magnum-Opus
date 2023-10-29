@@ -15,7 +15,7 @@ public class ObjectSlot : MonoBehaviour
     {
         if (m_canReplenish && transform.childCount < 2)
         {
-            GameObject spawned = Instantiate(m_objectPrefab, transform);
+            GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
 
             if(spawned.transform.GetChild(0).TryGetComponent<ActionDraggable>(out var actionDraggable))
             {

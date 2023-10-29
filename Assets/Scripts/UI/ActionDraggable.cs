@@ -14,7 +14,8 @@ public class ActionDraggable : Draggable
         //finds if object was dropped out of bounds or not
         if (UIDragHelper.s_isOnUIElement)
         {
-            if (UIDragHelper.s_lastUIElementSetter != null)
+            if (UIDragHelper.s_lastUIElementSetter != null
+                && UIDragHelper.s_lastUIElementSetter.transform.parent.GetComponent<ActionLine>()!=null)
             {
                 int cellIndex = ActionLine.GetCellIndex(UIDragHelper.s_lastUIElementSetter.gameObject);
                 m_line = ActionLine.GetLine(UIDragHelper.s_lastUIElementSetter.gameObject);
@@ -84,6 +85,29 @@ public class ActionDraggable : Draggable
         }
 
         return base.Drag();
+
+    }
+    protected override void Unselect()
+    {
+        if (!m_staySelectedOnDrop)
+        {
+            base.Unselect();
+
+            s_isSomethingDragging = false;
+            
+            if (m_toActivateOnSelect != null)
+            {
+                foreach (GameObject _toDisable in m_toActivateOnSelect)
+                {
+                    _toDisable.SetActive(false);
+                }
+            }
+            
+        }
+        else
+        {
+            m_staySelectedOnDrop = false;
+        }
 
     }
     private void OnDisable()

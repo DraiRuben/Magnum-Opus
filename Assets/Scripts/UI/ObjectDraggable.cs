@@ -7,9 +7,10 @@ using UnityEngine.Tilemaps;
 
 public class ObjectDraggable : Draggable
 {
+    [SerializeField] private bool m_canProgram = false;
     [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
     public ObjectSlot m_slot;
-
+    private bool m_placedLine = false;
     protected override IEnumerator TryDrop()
     {
         InventoryManager.instance.m_scroller.enabled = true;
@@ -47,6 +48,11 @@ public class ObjectDraggable : Draggable
                             }
                         }
                     }
+                    if (!m_placedLine && m_canProgram)
+                    {
+                        m_placedLine = true;
+                        TimelineManager.instance.RegisterNewActionnableObject(this);
+                    }
                 }
                 else // we dropped it on another object
                 {
@@ -61,12 +67,22 @@ public class ObjectDraggable : Draggable
             }
             else // we dropped it out of the buildable area
             {
+                if (m_placedLine)
+                {
+                    m_placedLine = false;
+                    TimelineManager.instance.RemoveActionnableObject(this);
+                }
                 m_initialDrag = false;
                 InvalidateDrop();
             }
         }
         else // we dropped it on a UI element
         {
+            if (m_placedLine)
+            {
+                m_placedLine = false;
+                TimelineManager.instance.RemoveActionnableObject(this);
+            }
             m_initialDrag = false;
             s_IsSomethingSelected = false;
             m_isSelected = false;
