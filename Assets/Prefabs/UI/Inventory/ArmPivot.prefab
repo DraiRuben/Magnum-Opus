@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2040008945179687933}
   - component: {fileID: 2122930634990249021}
   - component: {fileID: 5604357877570430365}
+  - component: {fileID: 7675735971673829465}
   m_Layer: 6
   m_Name: ArmBase
   m_TagString: Mechanisms
@@ -162,13 +163,31 @@ MonoBehaviour:
   m_toActivateOnDrop:
   - {fileID: 2646947512241578747}
   m_scaleOutOfUI: {x: 1.3, y: 1.3, z: 1.3}
+  m_IsDraggable: 1
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect:
   - {fileID: 8941088587234842511}
   m_canProgram: 1
+  m_arm: {fileID: 0}
   m_dropLayerOrder: 5
   m_slot: {fileID: 0}
+--- !u!114 &7675735971673829465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216081292106683348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af3e794faef75246b951b9c583a984f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_isExtendable: 1
+  m_hasHand: 1
+  m_canRotate: 1
+  m_isOnTracks: 0
 --- !u!1 &2646947512241578747
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,6 +643,7 @@ MonoBehaviour:
   m_dragLayerOrder: 6
   m_toActivateOnDrop: []
   m_scaleOutOfUI: {x: 1.3, y: 1.3, z: 1.3}
+  m_IsDraggable: 1
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []

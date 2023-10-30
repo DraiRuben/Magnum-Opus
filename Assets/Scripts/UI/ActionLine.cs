@@ -9,13 +9,36 @@ public class ActionLine : MonoBehaviour
     [HideInInspector] public List<ActionDraggable> m_orders = new();
 
     [SerializeField] private TextMeshProUGUI m_lineIndexText;
+    [SerializeField] private ActionButtonPrefabs m_actionsPrefabs;
+    public static int s_longestActionLine = 0; //for cycle looping
+    private int m_longestPersonalActionLine = 0;
+    private static ActionLine s_longestLine;
     private int m_lineNumber;
     private void Start()
     {
-        for (int i = 0; i < transform.childCount - 1; i++)
+        for (int i = 0; i < transform.GetChild(0).childCount - 1; i++)
         {
             m_orders.Add(null);
         }
+        ExecutionControls.instance.UpdateLongestActionLine.AddListener(UpdateLength);
+    }
+
+    private void UpdateLength()
+    {
+        int highest = 0;
+        for(int i = 0; i < m_orders.Count; i++)
+        {
+            if (m_orders[i] != null && i > highest)
+                highest = i;
+        }
+        //if we found a higher length or if we changed the length of the higher one,
+        //override with the new value even if it's lower
+        if (highest > s_longestActionLine || s_longestLine == this) 
+        {
+            s_longestActionLine = highest;
+            s_longestLine = this;
+        }
+        m_longestPersonalActionLine = highest;
     }
     public int LineNumber
     {
@@ -40,21 +63,34 @@ public class ActionLine : MonoBehaviour
             {
                 amount--;
                 m_orders.RemoveAt(i);
-                for (int u = index + 1; u < i + 1; u++)
+                if(tryBackwards)
                 {
-                    Transform actionDraggable = transform.GetChild(u).GetChild(0);
-                    actionDraggable.parent = tryBackwards ? transform.GetChild(u - 1) : transform.GetChild(u + 1);
-                    actionDraggable.localPosition = Vector3.zero;
+                    for (int u = index + 1; u > i + 1; u--)
+                    {
+                        Transform actionDraggable = transform.GetChild(0).GetChild(u).GetChild(0);
+                        actionDraggable.parent = transform.GetChild(0).GetChild(u-1);
+                        actionDraggable.localPosition = Vector3.zero;
+                    }
                 }
-
+                else
+                {
+                    for (int u = index + 1; u < i + 1; u++)
+                    {
+                        Transform actionDraggable = transform.GetChild(0).GetChild(u).GetChild(0);
+                        actionDraggable.parent = transform.GetChild(0).GetChild(u + 1);
+                        actionDraggable.localPosition = Vector3.zero;
+                    }
+                }
+                
             }
             else
             {
                 i += tryBackwards ? -1 : 1; //only increment if we don't remove an element since that would offset the actual position in the list by 2
             }
-            if (!tryBackwards && i == m_orders.Count - 1)
+            if (!tryBackwards && i >= m_orders.Count)
             {//reverse pushing direction if we still need to push elements but don't have anything in front
                 tryBackwards = true;
+                i--;
             }
             else if (tryBackwards && i == 0)
             {
@@ -63,9 +99,15 @@ public class ActionLine : MonoBehaviour
                 while (amount > 0)
                 {
                     //no -1 since we need to ignore number displayer which counts in the childcount but not in the ordercount 
-                    Destroy(transform.GetChild(m_orders.Count).gameObject);
+                    Destroy(transform.GetChild(0).GetChild(m_orders.Count).GetChild(0).gameObject);
                     m_orders.RemoveAt(m_orders.Count - 1);
-
+                    amount--;
+                    for (int u = index + 1; u < m_orders.Count+1; u++)
+                    {
+                        Transform actionDraggable = transform.GetChild(0).GetChild(u).GetChild(0);
+                        actionDraggable.parent = transform.GetChild(0).GetChild(u + 1);
+                        actionDraggable.localPosition = Vector3.zero;
+                    }
                 }
 
             }
@@ -78,6 +120,6 @@ public class ActionLine : MonoBehaviour
     }
     public static ActionLine GetLine(GameObject cell)
     {
-        return cell.transform.parent.GetComponent<ActionLine>();
+        return cell.transform.parent.parent.GetComponent<ActionLine>();
     }
 }

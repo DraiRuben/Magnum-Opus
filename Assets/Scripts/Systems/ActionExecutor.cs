@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ActionExecutor : MonoBehaviour
@@ -26,7 +23,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotLeft:
                 if (m_canRotate)
                 {
-                    StartCoroutine(RotateRoutine(false,transform.parent));
+                    StartCoroutine(RotateRoutine(false, transform.parent));
                 }
                 else
                 {
@@ -36,7 +33,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotRight:
                 if (m_canRotate)
                 {
-                    StartCoroutine(RotateRoutine(true,transform.parent));
+                    StartCoroutine(RotateRoutine(true, transform.parent));
                 }
                 else
                 {
@@ -87,11 +84,11 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotRight:
                 if (m_hasHand)
                 {
-                    StartCoroutine(RotateRoutine(true, m_draggable.m_arm.transform.parent)); 
+                    StartCoroutine(RotateRoutine(true, m_draggable.m_arm.transform.parent));
                 }
                 else
                 {
-                    ErrorManager.instance.RegisterInvalidOrderException(order,this);
+                    ErrorManager.instance.RegisterInvalidOrderException(order, this);
                 }
                 break;
             case Order.PivotLeft:

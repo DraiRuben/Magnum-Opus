@@ -10,15 +10,24 @@ public class UIDragHelper : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Enter();
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Exit();
+    }
+
+    public void Enter()
+    {
         if (s_lastUIElementSetter == null)
         {
             s_isOnUIElement = true;
             s_lastUIElementSetter = this;
         }
-
     }
-
-    public void OnPointerExit(PointerEventData eventData)
+    public void Exit()
     {
         if (s_lastUIElementSetter != null && s_lastUIElementSetter == this)
         {

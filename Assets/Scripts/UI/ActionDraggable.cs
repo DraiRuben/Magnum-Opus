@@ -10,11 +10,13 @@ public class ActionDraggable : Draggable
     private ActionLine m_line;
     protected override IEnumerator TryDrop()
     {
+
         //finds if object was dropped out of bounds or not
         if (UIDragHelper.s_isOnUIElement)
         {
             if (UIDragHelper.s_lastUIElementSetter != null
-                && UIDragHelper.s_lastUIElementSetter.transform.parent.GetComponent<ActionLine>() != null)
+                && UIDragHelper.s_lastUIElementSetter.transform.parent.parent!=null
+                && UIDragHelper.s_lastUIElementSetter.transform.parent.parent.GetComponent<ActionLine>() != null)
             {
                 int cellIndex = ActionLine.GetCellIndex(UIDragHelper.s_lastUIElementSetter.gameObject);
                 m_line = ActionLine.GetLine(UIDragHelper.s_lastUIElementSetter.gameObject);
@@ -40,7 +42,6 @@ public class ActionDraggable : Draggable
                         m_line.m_orders[cellIndex - 1] = this;
                     }
                     gameObject.layer = LayerMask.NameToLayer("Action");
-
                 }
                 transform.parent.parent = UIDragHelper.s_lastUIElementSetter.transform;
                 transform.parent.localPosition = Vector3.zero;

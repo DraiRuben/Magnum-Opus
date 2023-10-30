@@ -5,8 +5,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.UI;
 
 public class ObjectDraggable : Draggable
 {

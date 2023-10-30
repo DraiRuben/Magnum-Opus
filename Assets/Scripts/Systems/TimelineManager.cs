@@ -4,7 +4,7 @@ using UnityEngine;
 public class TimelineManager : MonoBehaviour
 {
     public static TimelineManager instance;
-    private List<ActionLine> Lines = new List<ActionLine>();
+    [HideInInspector] public List<ActionLine> Lines = new List<ActionLine>();
 
     [SerializeField] private GameObject LinePrefab;
     private void Awake()

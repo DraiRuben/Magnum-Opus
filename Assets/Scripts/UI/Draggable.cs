@@ -9,6 +9,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
     [SerializeField] protected int m_dragLayerOrder = 3; //if it's set to -1 that means we don't change the layer when dragging
     [SerializeField] protected List<GameObject> m_toActivateOnDrop;
     [SerializeField] protected Vector3 m_scaleOutOfUI = Vector3.one;
+    [SerializeField] protected bool m_IsDraggable = true;
     public bool m_isInUI = true;
     public bool m_staySelectedOnDrop = false;
 
@@ -31,6 +32,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
         if (!m_isSelected && !s_isSomethingDragging && s_IsSomethingSelected)
         {
             MapManager.instance.m_unselectAll = true;
+            if (!m_IsDraggable) return; //if we aren't draggable we don't want to be able to drag it but still unselect everything
         }
         //starts dragging if it's initial input or drop if it's input release
         s_isSomethingDragging = !s_isSomethingDragging;
@@ -39,7 +41,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
 
         if (s_isSomethingDragging)
         {
-            // sometimes we might want to enable things when selecting like a highlight or the armeditor
+            // sometimes we might want to enable things when selecting like a highlight or the hand
             if (m_toActivateOnSelect != null)
             {
                 foreach (GameObject _toActivate in m_toActivateOnSelect)
@@ -55,7 +57,6 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
                 }
             }
             StartCoroutine(Drag());
-
         }
         else
         {
