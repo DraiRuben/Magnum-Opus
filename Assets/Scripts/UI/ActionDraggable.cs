@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ActionDraggable : Draggable
 {
@@ -15,7 +14,7 @@ public class ActionDraggable : Draggable
         if (UIDragHelper.s_isOnUIElement)
         {
             if (UIDragHelper.s_lastUIElementSetter != null
-                && UIDragHelper.s_lastUIElementSetter.transform.parent.GetComponent<ActionLine>()!=null)
+                && UIDragHelper.s_lastUIElementSetter.transform.parent.GetComponent<ActionLine>() != null)
             {
                 int cellIndex = ActionLine.GetCellIndex(UIDragHelper.s_lastUIElementSetter.gameObject);
                 m_line = ActionLine.GetLine(UIDragHelper.s_lastUIElementSetter.gameObject);
@@ -94,7 +93,7 @@ public class ActionDraggable : Draggable
             base.Unselect();
 
             s_isSomethingDragging = false;
-            
+
             if (m_toActivateOnSelect != null)
             {
                 foreach (GameObject _toDisable in m_toActivateOnSelect)
@@ -102,7 +101,7 @@ public class ActionDraggable : Draggable
                     _toDisable.SetActive(false);
                 }
             }
-            
+
         }
         else
         {

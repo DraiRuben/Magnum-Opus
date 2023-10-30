@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
 
 public class ObjectDraggable : Draggable
 {
-    [SerializeField] private bool m_canProgram = false;
+    [HideInInspector] public bool m_canProgram = false;
+    [HideInInspector] public ArmEditor m_arm;
     [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
     public ObjectSlot m_slot;
     private bool m_placedLine = false;
@@ -116,3 +120,23 @@ public class ObjectDraggable : Draggable
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ObjectDraggable))]
+public class ObjectDraggable_Editor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector(); // for other non-HideInInspector fields
+
+        ObjectDraggable script = (ObjectDraggable)target;
+
+        // draw checkbox for the bool
+        script.m_canProgram = EditorGUILayout.Toggle("CanProgram", script.m_canProgram);
+        if (script.m_canProgram) // if bool is true, show other fields
+        {
+            script.m_arm = EditorGUILayout.ObjectField("Arm", script.m_arm, typeof(ArmEditor), true) as ArmEditor;
+        }
+    }
+}
+#endif

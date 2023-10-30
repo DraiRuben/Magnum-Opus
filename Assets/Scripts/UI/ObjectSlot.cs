@@ -17,11 +17,11 @@ public class ObjectSlot : MonoBehaviour
         {
             GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
 
-            if(spawned.transform.GetChild(0).TryGetComponent<ActionDraggable>(out var actionDraggable))
+            if (spawned.transform.GetChild(0).TryGetComponent(out ActionDraggable actionDraggable))
             {
                 actionDraggable.m_slot = this;
             }
-            else if(spawned.transform.GetChild(0).TryGetComponent<ObjectDraggable>(out var objectDraggable))
+            else if (spawned.transform.GetChild(0).TryGetComponent(out ObjectDraggable objectDraggable))
             {
                 objectDraggable.m_slot = this;
             }
@@ -31,7 +31,7 @@ public class ObjectSlot : MonoBehaviour
     {
         // called on object drop out of bounds
         // so that it comes back to the slot instead of disappearing indefinitely
-        if (transform.childCount <= 0)
+        if (transform.parent.childCount <= 1)
         {
             obj.transform.parent.parent = transform.parent;
             obj.transform.parent.localScale = Vector3.one;

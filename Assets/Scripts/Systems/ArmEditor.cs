@@ -58,10 +58,11 @@ public class ArmEditor : Draggable
         {
             Vector3Int tilePos = validZones.WorldToCell((Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
 
-            if (slerpTimer < 1f)
+            if (slerpTimer <= 1f)
             {
                 transform.parent.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, slerpTimer);
                 slerpTimer += 5.5f * Time.deltaTime;
+                if (slerpTimer > 1f) slerpTimer = 1f; //helps to have almost exact angles
             }
             if (validZones.GetTile(tilePos) != null
                 && tilePos != newValidTile)

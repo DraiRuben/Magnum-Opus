@@ -12,7 +12,7 @@ public class ActionLine : MonoBehaviour
     private int m_lineNumber;
     private void Start()
     {
-        for (int i = 0; i < transform.childCount-1; i++)
+        for (int i = 0; i < transform.childCount - 1; i++)
         {
             m_orders.Add(null);
         }
@@ -40,13 +40,13 @@ public class ActionLine : MonoBehaviour
             {
                 amount--;
                 m_orders.RemoveAt(i);
-                for(int u = index+1; u < i+1; u++)
+                for (int u = index + 1; u < i + 1; u++)
                 {
                     Transform actionDraggable = transform.GetChild(u).GetChild(0);
                     actionDraggable.parent = tryBackwards ? transform.GetChild(u - 1) : transform.GetChild(u + 1);
                     actionDraggable.localPosition = Vector3.zero;
                 }
-               
+
             }
             else
             {
