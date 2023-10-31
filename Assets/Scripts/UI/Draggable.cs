@@ -47,13 +47,6 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
                 foreach (GameObject _toActivate in m_toActivateOnSelect)
                 {
                     _toActivate.SetActive(true);
-                    _toActivate.TryGetComponent(out SpriteRenderer comp);
-
-                    if (comp != null)
-                    {
-                        comp.sortingOrder = m_dragLayerOrder;
-                    }
-
                 }
             }
             StartCoroutine(Drag());

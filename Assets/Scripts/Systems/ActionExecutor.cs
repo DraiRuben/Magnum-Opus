@@ -127,6 +127,26 @@ public class ActionExecutor : MonoBehaviour
                     ErrorManager.instance.RegisterInvalidOrderException(order, this);
                 }
                 break;
+            case Order.Grab:
+                if (m_hasHand)
+                {
+                    
+                }
+                else
+                {
+                    ErrorManager.instance.RegisterInvalidOrderException(order, this);
+                }
+                break;
+            case Order.Drop:
+                if (m_hasHand)
+                {
+                    
+                }
+                else
+                {
+                    ErrorManager.instance.RegisterInvalidOrderException(order, this);
+                }
+                break;
         }
     }
     private IEnumerator RotateRoutine(bool right, Transform _toRotate)

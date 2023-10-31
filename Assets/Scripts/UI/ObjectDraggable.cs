@@ -55,6 +55,7 @@ public class ObjectDraggable : Draggable
                         m_placedLine = true;
                         TimelineManager.instance.RegisterNewActionnableObject(this);
                     }
+                    m_slot.TryRegenObject();
                 }
                 else // we dropped it on another object
                 {
@@ -90,16 +91,6 @@ public class ObjectDraggable : Draggable
             m_isSelected = false;
             InvalidateDrop();
         }
-    }
-    protected override IEnumerator Drag()
-    {
-        if (m_isInUI)
-        {
-            m_slot.TryRegenObject();
-
-        }
-        return base.Drag();
-
     }
     private void InvalidateDrop()
     {

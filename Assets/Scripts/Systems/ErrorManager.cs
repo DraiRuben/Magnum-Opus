@@ -50,6 +50,12 @@ public class ErrorManager : MonoBehaviour
             case Order.PivotLeft:
                 DisplayError("Cannot rotate hand, this object is not an arm");
                 break;
+            case Order.Grab:
+                DisplayError("Cannot grab, this object is not an arm");
+                break;
+            case Order.Drop:
+                DisplayError("Cannot drop, this object is not an arm");
+                break;
         }
     }
 

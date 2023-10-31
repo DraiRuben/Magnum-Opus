@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: -413283157
   m_SortingLayer: 1
   m_SortingOrder: 12
-  m_Sprite: {fileID: 21300000, guid: 7f5c6980bf89c7d469df396df887a6ef, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b07c0ac3248969e48a6435cd321195ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -138,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4521197710835868697, guid: febf4af62e4665c45ab15323dc96e06d, type: 3}
       propertyPath: m_Name
-      value: ActionPivotRight
+      value: ActionDrop
       objectReference: {fileID: 0}
     - target: {fileID: 4745601360072609226, guid: febf4af62e4665c45ab15323dc96e06d, type: 3}
       propertyPath: m_SortingLayer
@@ -146,7 +146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6159587851383687640, guid: febf4af62e4665c45ab15323dc96e06d, type: 3}
       propertyPath: m_order
-      value: 5
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

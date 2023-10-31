@@ -64,8 +64,12 @@ public class ExecutionControls : MonoBehaviour
     public void Play()
     {
         //TODO: call function to fill in empty spaces between instructions
-        m_isPaused = !m_isPaused;
+        if (!m_stepByStep)
+        {
+            m_isPaused = !m_isPaused;
+        }
         m_stepByStep = false;
+        m_nextStep = true;
         MapManager.instance.m_unselectAll = true;
         Selectable.s_CanPlayerSelect = false;
         TimelineManager.instance.UpdateLongestActionLine.Invoke();

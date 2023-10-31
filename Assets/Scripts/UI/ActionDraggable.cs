@@ -54,6 +54,7 @@ public class ActionDraggable : Draggable
                     }
                 }
                 m_isUsed = true;
+                m_slot.TryRegenObject();
             }
             else // we dropped it on the UI but nowhere slottable
             {
@@ -74,11 +75,7 @@ public class ActionDraggable : Draggable
     }
     protected override IEnumerator Drag()
     {
-        if (m_isInUI)
-        {
-            m_slot.TryRegenObject();
 
-        }
         if (m_line != null)
         {
             m_line.m_orders[m_line.m_orders.IndexOf(this)] = null;
@@ -126,5 +123,7 @@ public enum Order
     Extend,
     Retract,
     Plus,
-    Minus
+    Minus,
+    Grab,
+    Drop
 }
