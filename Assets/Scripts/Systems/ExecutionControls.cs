@@ -75,6 +75,7 @@ public class ExecutionControls : MonoBehaviour
         TimelineManager.instance.UpdateLongestActionLine.Invoke();
         m_playRoutine ??= StartCoroutine(PlayRoutine());
     }
+
     public void Stop()
     {
         //destroy all cloned ressources & filler empty actions, need to make a class to allow ressources to be picked up & an automatic function in actionline that fills up the lines
