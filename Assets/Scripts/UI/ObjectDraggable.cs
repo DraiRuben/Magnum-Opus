@@ -120,7 +120,7 @@ public class ObjectDraggable : Draggable
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(ObjectDraggable))]
+[CustomEditor(typeof(ObjectDraggable))] // to show the arm field only if the object is programmable
 public class ObjectDraggable_Editor : Editor
 {
     public override void OnInspectorGUI()

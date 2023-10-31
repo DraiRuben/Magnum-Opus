@@ -7,8 +7,16 @@ public class ActionExecutor : MonoBehaviour
     [SerializeField] private bool m_hasHand = false;
     [SerializeField] private bool m_canRotate = false;
     [SerializeField] private bool m_isOnTracks = false;
-    public static float s_cycleDuration = 1f;
+
+    public static float s_cycleDuration = 0.7f;
     private ObjectDraggable m_draggable;
+    
+    private Quaternion oldRotation;
+    private Quaternion newRotation;
+
+    private float routineTimer;
+
+    private Coroutine currentBehaviour;
     private void Awake()
     {
         m_draggable = GetComponent<ObjectDraggable>();
@@ -23,7 +31,17 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotLeft:
                 if (m_canRotate)
                 {
-                    StartCoroutine(RotateRoutine(false, transform.parent));
+                    //this means we tried starting a new rotation before the previous behaviour was finished,
+                    //we need to instantly finish (not skip) the current one, then do the next one,
+                    //this is used for when the user spams the next step button
+                    if (currentBehaviour != null)
+                    {
+                        oldRotation = newRotation;
+                        transform.parent.rotation = oldRotation;
+                        newRotation = Quaternion.Euler(0, 0, transform.parent.rotation.eulerAngles.z + 60f);
+                        routineTimer = 0f;
+                    } 
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(false, transform.parent));
                 }
                 else
                 {
@@ -33,7 +51,15 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotRight:
                 if (m_canRotate)
                 {
-                    StartCoroutine(RotateRoutine(true, transform.parent));
+                    if (currentBehaviour != null)
+                    {
+                        oldRotation = newRotation;
+                        transform.parent.rotation = oldRotation;
+                        newRotation = Quaternion.Euler(0, 0, transform.parent.rotation.eulerAngles.z - 60f);
+                        routineTimer = 0f;
+
+                    }
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(true, transform.parent));
                 }
                 else
                 {
@@ -84,7 +110,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotRight:
                 if (m_hasHand)
                 {
-                    StartCoroutine(RotateRoutine(true, m_draggable.m_arm.transform.parent));
+                    StartCoroutine(RotateRoutine(true, m_draggable.m_arm.m_contentPivot.transform));
                 }
                 else
                 {
@@ -94,7 +120,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotLeft:
                 if (m_hasHand)
                 {
-                    StartCoroutine(RotateRoutine(false, m_draggable.m_arm.transform.parent));
+                    StartCoroutine(RotateRoutine(false, m_draggable.m_arm.m_contentPivot.transform));
                 }
                 else
                 {
@@ -105,14 +131,18 @@ public class ActionExecutor : MonoBehaviour
     }
     private IEnumerator RotateRoutine(bool right, Transform _toRotate)
     {
-        float timer = 0f;
-        Quaternion oldRotation = _toRotate.rotation;
-        Quaternion newRotation = Quaternion.Euler(0, 0, _toRotate.rotation.eulerAngles.z + (right ? -60 : 60));
-        while (timer < s_cycleDuration)
+        routineTimer = 0f;
+        oldRotation = _toRotate.rotation;
+        newRotation = Quaternion.Euler(0, 0, _toRotate.rotation.eulerAngles.z + (right ? -60f : 60f));
+        while (routineTimer < s_cycleDuration)
         {
-            transform.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, timer / s_cycleDuration);
-            timer += Time.deltaTime;
+            if (!ExecutionControls.instance.m_isPaused)
+            {
+                transform.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, routineTimer / s_cycleDuration);
+                routineTimer += Time.deltaTime;
+            }
             yield return null;
         }
+        currentBehaviour = null;
     }
 }

@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class TimelineManager : MonoBehaviour
 {
     public static TimelineManager instance;
     [HideInInspector] public List<ActionLine> Lines = new List<ActionLine>();
+    [HideInInspector] public UnityEvent UpdateLongestActionLine = new();
 
     [SerializeField] private GameObject LinePrefab;
+    [SerializeField] private Button m_playButton;
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -18,6 +22,11 @@ public class TimelineManager : MonoBehaviour
         Lines.Add(comp);
         comp.m_actionTarget = obj;
         comp.LineNumber = Lines.Count;
+        if (Lines.Count > 0)
+        {
+            //enable play button since we now have a line
+            ExecutionControls.instance.SetPlayButtonsInteractable(true);
+        }
     }
     public void RemoveActionnableObject(ObjectDraggable obj)
     {
@@ -30,6 +39,11 @@ public class TimelineManager : MonoBehaviour
             Destroy(_toRemove.gameObject);
         }
         UpdateLineNumber();
+        if(Lines.Count <= 0)
+        {
+            //disable play button if we don't have any line to use
+            ExecutionControls.instance.SetPlayButtonsInteractable(false);
+        }
     }
     private void UpdateLineNumber()
     {

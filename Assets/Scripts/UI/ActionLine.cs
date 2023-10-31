@@ -20,7 +20,7 @@ public class ActionLine : MonoBehaviour
         {
             m_orders.Add(null);
         }
-        ExecutionControls.instance.UpdateLongestActionLine.AddListener(UpdateLength);
+        TimelineManager.instance.UpdateLongestActionLine.AddListener(UpdateLength);
     }
 
     private void UpdateLength()

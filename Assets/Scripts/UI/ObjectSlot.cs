@@ -10,21 +10,28 @@ public class ObjectSlot : MonoBehaviour
     {
         m_sprite = GetComponent<SpriteRenderer>();
     }
-
+    private void Start()
+    {
+        RegenObject();
+    }
     public void TryRegenObject()
     {
         if (m_canReplenish && transform.childCount < 2)
         {
-            GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
+            RegenObject();
+        }
+    }
+    private void RegenObject()
+    {
+        GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
 
-            if (spawned.transform.GetChild(0).TryGetComponent(out ActionDraggable actionDraggable))
-            {
-                actionDraggable.m_slot = this;
-            }
-            else if (spawned.transform.GetChild(0).TryGetComponent(out ObjectDraggable objectDraggable))
-            {
-                objectDraggable.m_slot = this;
-            }
+        if (spawned.transform.GetChild(0).TryGetComponent(out ActionDraggable actionDraggable))
+        {
+            actionDraggable.m_slot = this;
+        }
+        else if (spawned.transform.GetChild(0).TryGetComponent(out ObjectDraggable objectDraggable))
+        {
+            objectDraggable.m_slot = this;
         }
     }
     public void TryReturnObject(Draggable obj)

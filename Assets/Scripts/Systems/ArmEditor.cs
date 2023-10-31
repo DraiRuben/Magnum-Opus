@@ -10,7 +10,7 @@ public class ArmEditor : Draggable
     [SerializeField] private GameObject m_mediumArm;
     [SerializeField] private GameObject m_longArm; //of the law 
     private int m_armLength = 1;
-
+    public GameObject m_contentPivot;
     private void SetArmLength(int value)
     {
         m_armLength = Mathf.Clamp(value, 1, 3);

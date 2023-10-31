@@ -5,7 +5,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
     public ScrollRect m_scroller;
-    public GameObject m_armPreviewer;
+
     private Vector3 m_poolPos = new(0, -50000, 0);
     private void Awake()
     {
