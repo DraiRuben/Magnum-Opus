@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,5 +17,7 @@ public class ActionButtonPrefabs : ScriptableObject
         MovePlus,
         MoveMinus,
         Reset,
+        Grab,
+        Drop
     }
 }

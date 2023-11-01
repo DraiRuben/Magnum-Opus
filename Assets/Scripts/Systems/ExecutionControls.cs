@@ -1,7 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ExecutionControls : MonoBehaviour
@@ -13,13 +11,13 @@ public class ExecutionControls : MonoBehaviour
     [SerializeField] private Button m_stopButton;
     [SerializeField] private Button m_playButton;
     [SerializeField] private Button m_stepButton;
-    
+
     [HideInInspector] public bool m_isPaused = true;
 
     private bool m_isPlaying = false;
     private bool m_stepByStep = false;
     private bool m_nextStep = false;
-    
+
 
     private int m_currentCycle = 0;
     private Coroutine m_playRoutine;
@@ -39,8 +37,8 @@ public class ExecutionControls : MonoBehaviour
     }
     public void SetPlayButtonsInteractable(bool interactable)
     {
-        var comps = GetComponentsInChildren<Button>();
-        foreach(var button in comps)
+        Button[] comps = GetComponentsInChildren<Button>();
+        foreach (Button button in comps)
         {
             button.interactable = interactable;
         }
@@ -93,9 +91,9 @@ public class ExecutionControls : MonoBehaviour
         m_cycleHighlight.SetActive(true);
         while (m_isPlaying)
         {
-            m_cycleHighlight.transform.position = TimelineManager.instance.Lines[0].transform.GetChild(0).GetChild(m_currentCycle+1).position;
-            m_cycleHighlight.transform.localPosition = new(m_cycleHighlight.transform.localPosition.x,0,m_cycleHighlight.transform.localPosition.z);
-            foreach(var line in TimelineManager.instance.Lines)
+            m_cycleHighlight.transform.position = TimelineManager.instance.Lines[0].transform.GetChild(0).GetChild(m_currentCycle + 1).position;
+            m_cycleHighlight.transform.localPosition = new(m_cycleHighlight.transform.localPosition.x, 0, m_cycleHighlight.transform.localPosition.z);
+            foreach (ActionLine line in TimelineManager.instance.Lines)
             {
                 if (line.m_orders[m_currentCycle] != null)
                 {

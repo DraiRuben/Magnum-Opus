@@ -10,7 +10,7 @@ public class ActionExecutor : MonoBehaviour
 
     public static float s_cycleDuration = 0.7f;
     private ObjectDraggable m_draggable;
-    
+
     private Quaternion oldRotation;
     private Quaternion newRotation;
 
@@ -40,7 +40,7 @@ public class ActionExecutor : MonoBehaviour
                         transform.parent.rotation = oldRotation;
                         newRotation = Quaternion.Euler(0, 0, transform.parent.rotation.eulerAngles.z + 60f);
                         routineTimer = 0f;
-                    } 
+                    }
                     currentBehaviour ??= StartCoroutine(RotateRoutine(false, transform.parent));
                 }
                 else
@@ -130,7 +130,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Grab:
                 if (m_hasHand)
                 {
-                    
+
                 }
                 else
                 {
@@ -140,7 +140,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Drop:
                 if (m_hasHand)
                 {
-                    
+
                 }
                 else
                 {
@@ -164,5 +164,21 @@ public class ActionExecutor : MonoBehaviour
             yield return null;
         }
         currentBehaviour = null;
+    }
+    private IEnumerator GrabRoutine()
+    {
+        Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
+        Vector3 worldTilePosUnderHand = MapManager.instance.m_placeableMap.CellToWorld(tilePosUnderHand);
+        RaycastHit2D HitInfo = Physics2D.Raycast(worldTilePosUnderHand + Vector3.back, Vector3.forward, LayerMask.GetMask("ArmGrabbable"));
+        if (HitInfo.collider != null)
+        {
+            var comp = HitInfo.collider.GetComponent<Ressource>();
+            if (comp != null && comp.CanBeGrabbed)
+            {
+                
+            }
+
+        }
+        yield return null;
     }
 }

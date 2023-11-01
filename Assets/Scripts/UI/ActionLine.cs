@@ -9,7 +9,7 @@ public class ActionLine : MonoBehaviour
     [HideInInspector] public List<ActionDraggable> m_orders = new();
 
     [SerializeField] private TextMeshProUGUI m_lineIndexText;
-    [SerializeField] private ActionButtonPrefabs m_actionsPrefabs;
+    [SerializeField] private ActionButtonPrefabs m_actionsPrefabs; //for filling slots with the counter things for the reset
     public static int s_longestActionLine = 0; //for cycle looping
     private int m_longestPersonalActionLine = 0;
     private static ActionLine s_longestLine;
@@ -26,14 +26,14 @@ public class ActionLine : MonoBehaviour
     private void UpdateLength()
     {
         int highest = 0;
-        for(int i = 0; i < m_orders.Count; i++)
+        for (int i = 0; i < m_orders.Count; i++)
         {
             if (m_orders[i] != null && i > highest)
                 highest = i;
         }
         //if we found a higher length or if we changed the length of the higher one,
         //override with the new value even if it's lower
-        if (highest > s_longestActionLine || s_longestLine == this) 
+        if (highest > s_longestActionLine || s_longestLine == this)
         {
             s_longestActionLine = highest;
             s_longestLine = this;
@@ -63,12 +63,12 @@ public class ActionLine : MonoBehaviour
             {
                 amount--;
                 m_orders.RemoveAt(i);
-                if(tryBackwards)
+                if (tryBackwards)
                 {
                     for (int u = index + 1; u > i + 1; u--)
                     {
                         Transform actionDraggable = transform.GetChild(0).GetChild(u).GetChild(0);
-                        actionDraggable.parent = transform.GetChild(0).GetChild(u-1);
+                        actionDraggable.parent = transform.GetChild(0).GetChild(u - 1);
                         actionDraggable.localPosition = Vector3.zero;
                     }
                 }
@@ -81,7 +81,7 @@ public class ActionLine : MonoBehaviour
                         actionDraggable.localPosition = Vector3.zero;
                     }
                 }
-                
+
             }
             else
             {
@@ -102,7 +102,7 @@ public class ActionLine : MonoBehaviour
                     Destroy(transform.GetChild(0).GetChild(m_orders.Count).GetChild(0).gameObject);
                     m_orders.RemoveAt(m_orders.Count - 1);
                     amount--;
-                    for (int u = index + 1; u < m_orders.Count+1; u++)
+                    for (int u = index + 1; u < m_orders.Count + 1; u++)
                     {
                         Transform actionDraggable = transform.GetChild(0).GetChild(u).GetChild(0);
                         actionDraggable.parent = transform.GetChild(0).GetChild(u + 1);

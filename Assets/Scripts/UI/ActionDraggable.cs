@@ -15,7 +15,7 @@ public class ActionDraggable : Draggable
         if (UIDragHelper.s_isOnUIElement)
         {
             if (UIDragHelper.s_lastUIElementSetter != null
-                && UIDragHelper.s_lastUIElementSetter.transform.parent.parent!=null
+                && UIDragHelper.s_lastUIElementSetter.transform.parent.parent != null
                 && UIDragHelper.s_lastUIElementSetter.transform.parent.parent.GetComponent<ActionLine>() != null)
             {
                 int cellIndex = ActionLine.GetCellIndex(UIDragHelper.s_lastUIElementSetter.gameObject);

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonSpriteChanger : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
+public class ButtonSpriteChanger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private SpriteState m_state;
     private HoverState m_hoverState;
@@ -36,9 +34,9 @@ public class ButtonSpriteChanger : MonoBehaviour,IPointerEnterHandler,IPointerEx
     }
     private void UpdateSprite()
     {
-        if(m_state == SpriteState.Clicked)
+        if (m_state == SpriteState.Clicked)
         {
-            if(m_hoverState == HoverState.Hovering)
+            if (m_hoverState == HoverState.Hovering)
             {
                 m_image.sprite = m_hoverClicked;
             }
@@ -62,15 +60,15 @@ public class ButtonSpriteChanger : MonoBehaviour,IPointerEnterHandler,IPointerEx
 
     public void SetState(bool clicked)
     {
-        m_state = !clicked ?SpriteState.Unclicked:SpriteState.Clicked;
+        m_state = !clicked ? SpriteState.Unclicked : SpriteState.Clicked;
         UpdateSprite();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        m_hoverState = HoverState.Hovering; 
+        m_hoverState = HoverState.Hovering;
 
-        if(m_button.interactable)
+        if (m_button.interactable)
             UpdateSprite();
     }
 

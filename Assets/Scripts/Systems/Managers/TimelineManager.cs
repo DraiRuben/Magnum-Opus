@@ -39,7 +39,7 @@ public class TimelineManager : MonoBehaviour
             Destroy(_toRemove.gameObject);
         }
         UpdateLineNumber();
-        if(Lines.Count <= 0)
+        if (Lines.Count <= 0)
         {
             //disable play button if we don't have any line to use
             ExecutionControls.instance.SetPlayButtonsInteractable(false);

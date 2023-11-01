@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,40 +5,81 @@ using UnityEngine;
 public class Ressource : MonoBehaviour
 {
     [SerializeField] private GameObject m_connector;
-    [SerializeField] public List<FusionData> m_data;
-    private List<GameObject> m_connectors = new();
-    public void Fuse(GameObject res1, GameObject res2)
-    {
-        //fuse the 2 ressources
-        var data = m_data.Where(x => x.OriginNode == res1 || x.OriginNode == res2).ToList();
-        if (data.Count == 1)
-        {
-            //add the missing one to data
-        }
-        else
-        {
-            //add both to data
-        }
-        //don't do anything if count ==2 since we already have data on both, this means the connector is already instantiated
-    }
+    [SerializeField] private bool m_isFusionRoot;
+    [SerializeField] private List<Ressource> FusionNodes = new();
 
-    public void FuseNodes()
+    [HideInInspector] public bool m_isGrabbed = false;
+
+    private List<GameObject> m_connectors = new();
+    private void Start()
     {
-        foreach(FusionData data in m_data)
+        if (FusionNodes.Count > 0)
         {
-            foreach(GameObject targetNode in data.FusionNodes)
+            foreach (Ressource fusionNode in FusionNodes)
             {
-                float angle = Mathf.Atan2(transform.position.x - targetNode.transform.position.x, transform.position.y - targetNode.transform.position.y) * Mathf.Rad2Deg;
-                m_connectors.Add(Instantiate(m_connector,transform.position,Quaternion.Euler(0,0,angle), transform));
+                TryFuse(fusionNode);
             }
         }
     }
-    [Serializable]
-    public struct FusionData
+    public bool CanBeGrabbed
     {
+        get
+        {
+            if (FusionNodes.Count > 0)
+            {
+                List<Ressource> problematicObjects = FusionNodes.Where(x => x.m_isGrabbed).ToList();
+                if (problematicObjects.Count > 0)
+                {
+                    problematicObjects.Add(this);
+                    ErrorManager.instance.RegisterMultiGrabException(problematicObjects);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (m_isGrabbed)
+                {
+                    ErrorManager.instance.RegisterMultiGrabException(new List<Ressource> { this });
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
 
-        public GameObject OriginNode;
-        public List<GameObject> FusionNodes;
+            }
+        }
+    }
+    public void TryFuse(Ressource res2)
+    {
+        //fuse the 2 ressources
+        if (!FusionNodes.Contains(res2))
+        {
+            FusionNodes.Add(res2);
+            res2.FusionNodes.Add(this);
+
+            float angle = Mathf.Atan2(transform.position.x - res2.transform.position.x, transform.position.y - res2.transform.position.y) * Mathf.Rad2Deg;
+            GameObject connector = Instantiate(m_connector, transform.position, Quaternion.Euler(0, 0, angle), transform);
+            m_connectors.Add(connector);
+            res2.m_connectors.Add(connector);
+
+        }
+    }
+    public void RearrangeFusionHierarchy()
+    {
+        if(!m_isFusionRoot && FusionNodes.Count>0) //rearrange hierarchy so that the entire fused thing pivots around this now
+        {
+            foreach(Ressource _toReparent in FusionNodes)
+            {
+                _toReparent.transform.parent = transform;
+                _toReparent.m_isFusionRoot = false;
+            }
+            m_isFusionRoot =true;
+        }
     }
     private static List<Vector3Int> s_CloseTiles = new()
     {
