@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2122930634990249021}
   - component: {fileID: 5604357877570430365}
   - component: {fileID: 7675735971673829465}
+  - component: {fileID: 5156082364476865344}
   m_Layer: 6
   m_Name: ArmBase
   m_TagString: Mechanisms
@@ -164,14 +165,23 @@ MonoBehaviour:
   m_dragLayerOrder: 11
   m_toActivateOnDrop:
   - {fileID: 2646947512241578747}
+  m_toChangeLayer:
+  - spriteRenderer: {fileID: 710375540820848727}
+    modifier: 1
+  - spriteRenderer: {fileID: 4449507585615672211}
+    modifier: 1
+  - spriteRenderer: {fileID: 3637861535538065348}
+    modifier: 2
+  - spriteRenderer: {fileID: 4651278543346568256}
+    modifier: 3
   m_scaleOutOfUI: {x: 1.3, y: 1.3, z: 1.3}
   m_IsDraggable: 1
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect:
   - {fileID: 8941088587234842511}
+  m_arm: {fileID: 1039964065083193510}
   m_canProgram: 1
-  m_arm: {fileID: 0}
   m_dropLayerOrder: 5
   m_slot: {fileID: 0}
 --- !u!114 &7675735971673829465
@@ -190,6 +200,33 @@ MonoBehaviour:
   m_hasHand: 1
   m_canRotate: 1
   m_isOnTracks: 0
+--- !u!50 &5156082364476865344
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216081292106683348}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &2646947512241578747
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +301,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 281e8c7f59e47fb4e956606dc6b8708f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -348,7 +385,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 14
   m_Sprite: {fileID: 21300000, guid: 6a8633af68a5a1a44b87f1fb6c908fb8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -467,7 +504,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 14
   m_Sprite: {fileID: 21300000, guid: c523d75f0b9ce03418245dc8a36f88ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -584,7 +621,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 12
+  m_SortingOrder: 15
   m_Sprite: {fileID: 21300000, guid: 723a7f66a2e014149aa73094aa2698e6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -676,6 +713,7 @@ MonoBehaviour:
   m_canBeSelected: 1
   m_dragLayerOrder: 6
   m_toActivateOnDrop: []
+  m_toChangeLayer: []
   m_scaleOutOfUI: {x: 1.3, y: 1.3, z: 1.3}
   m_IsDraggable: 1
   m_isInUI: 1

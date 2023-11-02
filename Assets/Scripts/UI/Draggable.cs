@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
 {
     [SerializeField] protected int m_dragLayerOrder = 3; //if it's set to -1 that means we don't change the layer when dragging
     [SerializeField] protected List<GameObject> m_toActivateOnDrop;
+    [SerializeField] protected List<layerModificationData> m_toChangeLayer;
     [SerializeField] protected Vector3 m_scaleOutOfUI = Vector3.one;
     [SerializeField] protected bool m_IsDraggable = true;
     public bool m_isInUI = true;
@@ -72,10 +74,8 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
         transform.parent.parent = null;
         transform.parent.localScale = m_scaleOutOfUI;
         SaveTransform();
-        if (m_dragLayerOrder >= 0)
-        {
-            m_sprite.sortingOrder = m_dragLayerOrder;
-        }
+        m_sprite.sortingOrder = m_dragLayerOrder;
+        
         //so that the center doesn't snap to the mouse
         Vector2 offset = transform.parent.position - Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         while (s_isSomethingDragging)
@@ -116,5 +116,10 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
 
     }
     protected abstract IEnumerator TryDrop();
-
+    [Serializable]
+    public struct layerModificationData
+    {
+        public SpriteRenderer spriteRenderer;
+        public int modifier;
+    }
 }

@@ -1,18 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class ObjectDraggable : Draggable
 {
-    [HideInInspector] public bool m_canProgram = false;
-    [HideInInspector] public ArmEditor m_arm;
-    [SerializeField] private int m_dropLayerOrder = 3; // if it's set to -1 that means we don't change layer on drop
+     public ArmEditor m_arm;
+    [SerializeField] public bool m_canProgram = false;
+
+    [SerializeField] private int m_dropLayerOrder = 3;
     public ObjectSlot m_slot;
     private bool m_placedLine = false;
+    protected override IEnumerator Drag()
+    {
+        SetArmLayer(true);
+        SetOtherLayersDrag(true);
+        return base.Drag();
+    }
+    private void SetArmLayer(bool select)
+    {
+        if (m_arm != null)
+        {
+            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dragLayerOrder + (select?1:-2);
+        }
+    }
+    private void SetOtherLayersDrag(bool drag)
+    {
+        if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
+        {
+            foreach (var item in m_toChangeLayer)
+            {
+                item.spriteRenderer.sortingOrder = m_dragLayerOrder + item.modifier;
+            }
+        }
+    }
     protected override IEnumerator TryDrop()
     {
         InventoryManager.instance.m_scroller.enabled = true;
@@ -20,14 +46,14 @@ public class ObjectDraggable : Draggable
         //finds if object was dropped out of bounds or not
         if (!UIDragHelper.s_isOnUIElement)
         {
-            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), 5000, ~LayerMask.GetMask("Mechanisms"));
+            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), 5000, ~LayerMask.GetMask("Mechanisms", "ArmGrabbable"));
             if (Hit.collider != null && Hit.collider.gameObject.layer == LayerMask.NameToLayer("Map"))
             {
                 //finds closest tile and sets position of this object to that tile
                 Tilemap map = MapManager.instance.m_placeableMap;
                 Vector3Int closestCellPos = map.WorldToCell(transform.parent.position); // parent is pivot point
                 Vector3 closestCellWorldPos = map.CellToWorld(closestCellPos);
-                transform.parent.position = (Vector2)closestCellWorldPos; //discards z so that z stays at 0
+                transform.parent.position = (Vector2)(closestCellWorldPos); //discards z so that z stays at 0
 
                 yield return new WaitForFixedUpdate(); //waits for collider to update its position
 
@@ -35,13 +61,38 @@ public class ObjectDraggable : Draggable
                 filter.useTriggers = false;
                 List<Collider2D> results = new();
                 Physics2D.OverlapCollider(GetComponent<Collider2D>(), filter, results);
+                var Ressource = GetComponent<RessourceSpawner>();
+                if (Ressource != null)
+                {
+                    if(Ressource.m_fusedSpawners.Count> 0)
+                    {
+                        foreach(var fused in Ressource.m_fusedSpawners)
+                        {
+                            List<Collider2D> localResults = new();
+                            Physics2D.OverlapCollider(fused.GetComponent<Collider2D>(), filter, localResults);
+                            results.AddRange(localResults);
+                        }
+                    }
+                }
                 List<Collider2D> FilteredResult = results.Where(x => x.CompareTag("Mechanisms")).ToList();
 
                 if (FilteredResult.Count <= 0)// we didn't find anything overlapping so we can place the thing down without resetting anything
                 {
                     if (m_dropLayerOrder >= 0)
                     {
-                        m_sprite.sortingOrder = m_dropLayerOrder;
+                        m_sprite.sortingOrder = m_dropLayerOrder; 
+
+                        if (m_arm != null)
+                        {
+                            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dropLayerOrder +1;
+                        }
+                        if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
+                        {
+                            foreach (var item in m_toChangeLayer)
+                            {
+                                item.spriteRenderer.sortingOrder = m_dropLayerOrder + item.modifier;
+                            }
+                        }
                         if (m_toActivateOnDrop != null) //sometimes we might want to activate things on drop like the arm editor
                         {
                             foreach (GameObject _toActivate in m_toActivateOnDrop)
@@ -60,9 +111,17 @@ public class ObjectDraggable : Draggable
                 else // we dropped it on another object
                 {
                     if (m_isInUI)
+                    {
                         m_sprite.sortingOrder = m_dragLayerOrder;
+                        SetArmLayer(false);
+                        SetOtherLayersDrag(true);
+                    }
                     else
+                    {
                         m_sprite.sortingOrder = m_dropLayerOrder;
+                        SetArmLayer(false);
+                        SetOtherLayersDrag(true);
+                    }
 
                     m_initialDrag = true;
                     InvalidateDrop();
@@ -110,22 +169,3 @@ public class ObjectDraggable : Draggable
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(ObjectDraggable))] // to show the arm field only if the object is programmable
-public class ObjectDraggable_Editor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector(); // for other non-HideInInspector fields
-
-        ObjectDraggable script = (ObjectDraggable)target;
-
-        // draw checkbox for the bool
-        script.m_canProgram = EditorGUILayout.Toggle("CanProgram", script.m_canProgram);
-        if (script.m_canProgram) // if bool is true, show other fields
-        {
-            script.m_arm = EditorGUILayout.ObjectField("Arm", script.m_arm, typeof(ArmEditor), true) as ArmEditor;
-        }
-    }
-}
-#endif

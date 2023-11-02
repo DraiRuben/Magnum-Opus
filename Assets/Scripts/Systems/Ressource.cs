@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,18 +7,25 @@ public class Ressource : MonoBehaviour
 {
     [SerializeField] private GameObject m_connector;
     [SerializeField] private bool m_isFusionRoot;
-    [SerializeField] private List<Ressource> FusionNodes = new();
+    public List<Ressource> m_fusedNodes = new();
 
     [HideInInspector] public bool m_isGrabbed = false;
 
     private List<GameObject> m_connectors = new();
-    private void Start()
+
+    //checks recursively through the entire structure of fused connections to check if there already is one that's grabbed
+    public void TryGetInvalidNodes(HashSet<Ressource> alreadyChecked, List<Ressource> problematicObjects, Ressource OriginNode)
     {
-        if (FusionNodes.Count > 0)
+        foreach (Ressource connected in OriginNode.m_fusedNodes)
         {
-            foreach (Ressource fusionNode in FusionNodes)
+            if (!alreadyChecked.Contains(connected))
             {
-                TryFuse(fusionNode);
+                alreadyChecked.Add(connected);
+                if (connected.m_isGrabbed)
+                {
+                    problematicObjects.Add(connected);
+                }
+                connected.TryGetInvalidNodes(alreadyChecked, problematicObjects, connected);
             }
         }
     }
@@ -25,9 +33,15 @@ public class Ressource : MonoBehaviour
     {
         get
         {
-            if (FusionNodes.Count > 0)
+            if (m_fusedNodes.Count > 0)
             {
-                List<Ressource> problematicObjects = FusionNodes.Where(x => x.m_isGrabbed).ToList();
+                HashSet<Ressource> alreadyChecked = new(m_fusedNodes);
+                List<Ressource> problematicObjects = m_fusedNodes.Where(x => x.m_isGrabbed).ToList();
+                foreach (Ressource connected in m_fusedNodes)
+                {
+                    TryGetInvalidNodes(alreadyChecked, problematicObjects, connected);
+
+                }
                 if (problematicObjects.Count > 0)
                 {
                     problematicObjects.Add(this);
@@ -57,10 +71,10 @@ public class Ressource : MonoBehaviour
     public void TryFuse(Ressource res2)
     {
         //fuse the 2 ressources
-        if (!FusionNodes.Contains(res2))
+        if (!m_fusedNodes.Contains(res2) && transform.childCount <= 0)
         {
-            FusionNodes.Add(res2);
-            res2.FusionNodes.Add(this);
+            m_fusedNodes.Add(res2);
+            res2.m_fusedNodes.Add(this);
 
             float angle = Mathf.Atan2(transform.position.x - res2.transform.position.x, transform.position.y - res2.transform.position.y) * Mathf.Rad2Deg;
             GameObject connector = Instantiate(m_connector, transform.position, Quaternion.Euler(0, 0, angle), transform);
@@ -71,14 +85,14 @@ public class Ressource : MonoBehaviour
     }
     public void RearrangeFusionHierarchy()
     {
-        if(!m_isFusionRoot && FusionNodes.Count>0) //rearrange hierarchy so that the entire fused thing pivots around this now
+        if (m_fusedNodes.Count > 0) //rearrange hierarchy so that the entire fused thing pivots around this now
         {
-            foreach(Ressource _toReparent in FusionNodes)
+            foreach (Ressource _toReparent in m_fusedNodes)
             {
                 _toReparent.transform.parent = transform;
                 _toReparent.m_isFusionRoot = false;
             }
-            m_isFusionRoot =true;
+            m_isFusionRoot = true;
         }
     }
     private static List<Vector3Int> s_CloseTiles = new()
@@ -91,4 +105,5 @@ public class Ressource : MonoBehaviour
         new Vector3Int(-1,-1,0),
 
     };
+
 }

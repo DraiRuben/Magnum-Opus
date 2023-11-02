@@ -6,7 +6,6 @@ public class ActionDraggable : Draggable
     public ObjectSlot m_slot;
     public Order m_order;
 
-    private bool m_isUsed = false;
     private ActionLine m_line;
     protected override IEnumerator TryDrop()
     {
@@ -53,14 +52,12 @@ public class ActionDraggable : Draggable
                         _toActivate.SetActive(true);
                     }
                 }
-                m_isUsed = true;
                 m_slot.TryRegenObject();
             }
             else // we dropped it on the UI but nowhere slottable
             {
                 s_IsSomethingSelected = false;
                 m_isSelected = false;
-                m_isUsed = false;
                 m_slot.TryReturnObject(this);
             }
         }
@@ -68,7 +65,6 @@ public class ActionDraggable : Draggable
         {
             s_IsSomethingSelected = false;
             m_isSelected = false;
-            m_isUsed = false;
             m_slot.TryReturnObject(this);
         }
         yield return null;
@@ -105,10 +101,6 @@ public class ActionDraggable : Draggable
         {
             m_staySelectedOnDrop = false;
         }
-
-    }
-    private void OnDisable()
-    {
 
     }
 }

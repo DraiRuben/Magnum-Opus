@@ -14,7 +14,7 @@ public class ExecutionControls : MonoBehaviour
 
     [HideInInspector] public bool m_isPaused = true;
 
-    private bool m_isPlaying = false;
+    public bool m_isPlaying = false;
     private bool m_stepByStep = false;
     private bool m_nextStep = false;
 

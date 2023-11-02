@@ -130,7 +130,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Grab:
                 if (m_hasHand)
                 {
-
+                    StartCoroutine(GrabRoutine());
                 }
                 else
                 {
@@ -140,7 +140,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Drop:
                 if (m_hasHand)
                 {
-
+                    StartCoroutine(DropRoutine());
                 }
                 else
                 {
@@ -167,17 +167,37 @@ public class ActionExecutor : MonoBehaviour
     }
     private IEnumerator GrabRoutine()
     {
-        Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
-        Vector3 worldTilePosUnderHand = MapManager.instance.m_placeableMap.CellToWorld(tilePosUnderHand);
-        RaycastHit2D HitInfo = Physics2D.Raycast(worldTilePosUnderHand + Vector3.back, Vector3.forward, LayerMask.GetMask("ArmGrabbable"));
-        if (HitInfo.collider != null)
+        if (m_draggable.m_arm.m_contentPivot.transform.childCount <= 0)
         {
-            var comp = HitInfo.collider.GetComponent<Ressource>();
-            if (comp != null && comp.CanBeGrabbed)
+            Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
+            Vector3 worldTilePosUnderHand = MapManager.instance.m_placeableMap.CellToWorld(tilePosUnderHand);
+            RaycastHit2D HitInfo = Physics2D.Raycast(worldTilePosUnderHand + Vector3.back, Vector3.forward, 50f, LayerMask.GetMask("ArmGrabbable"));
+            if (HitInfo.collider != null)
             {
-                
+                Ressource comp = HitInfo.collider.GetComponent<Ressource>();
+                if (comp != null && comp.CanBeGrabbed)
+                {
+                    comp.RearrangeFusionHierarchy();
+                    comp.m_isGrabbed = true;
+                    comp.transform.parent = m_draggable.m_arm.m_contentPivot.transform;
+                }
             }
+        }
+        yield return null;
+    }
+    private IEnumerator DropRoutine()
+    {
+        if (m_draggable.m_arm.m_contentPivot.transform.childCount > 0)
+        {
+            Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
+            Vector3 worldTilePosUnderHand = MapManager.instance.m_placeableMap.CellToWorld(tilePosUnderHand);
 
+            Ressource comp = m_draggable.m_arm.m_contentPivot.transform.GetChild(0).GetComponent<Ressource>();
+            if (comp != null)
+            {
+                comp.transform.parent = null;
+                comp.m_isGrabbed = false;
+            }
         }
         yield return null;
     }
