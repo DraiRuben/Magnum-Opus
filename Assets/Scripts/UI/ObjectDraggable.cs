@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 
 public class ObjectDraggable : Draggable
 {
-     public ArmEditor m_arm;
+    public ArmEditor m_arm;
     [SerializeField] public bool m_canProgram = false;
 
     [SerializeField] private int m_dropLayerOrder = 3;
@@ -26,14 +23,14 @@ public class ObjectDraggable : Draggable
     {
         if (m_arm != null)
         {
-            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dragLayerOrder + (select?1:-2);
+            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dragLayerOrder + (select ? 1 : -2);
         }
     }
     private void SetOtherLayersDrag(bool drag)
     {
         if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
         {
-            foreach (var item in m_toChangeLayer)
+            foreach (layerModificationData item in m_toChangeLayer)
             {
                 item.spriteRenderer.sortingOrder = m_dragLayerOrder + item.modifier;
             }
@@ -61,12 +58,12 @@ public class ObjectDraggable : Draggable
                 filter.useTriggers = false;
                 List<Collider2D> results = new();
                 Physics2D.OverlapCollider(GetComponent<Collider2D>(), filter, results);
-                var Ressource = GetComponent<RessourceSpawner>();
+                RessourceSpawner Ressource = GetComponent<RessourceSpawner>();
                 if (Ressource != null)
                 {
-                    if(Ressource.m_fusedSpawners.Count> 0)
+                    if (Ressource.m_fusedSpawners.Count > 0)
                     {
-                        foreach(var fused in Ressource.m_fusedSpawners)
+                        foreach (RessourceSpawner fused in Ressource.m_fusedSpawners)
                         {
                             List<Collider2D> localResults = new();
                             Physics2D.OverlapCollider(fused.GetComponent<Collider2D>(), filter, localResults);
@@ -80,15 +77,15 @@ public class ObjectDraggable : Draggable
                 {
                     if (m_dropLayerOrder >= 0)
                     {
-                        m_sprite.sortingOrder = m_dropLayerOrder; 
+                        m_sprite.sortingOrder = m_dropLayerOrder;
 
                         if (m_arm != null)
                         {
-                            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dropLayerOrder +1;
+                            m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dropLayerOrder + 1;
                         }
                         if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
                         {
-                            foreach (var item in m_toChangeLayer)
+                            foreach (layerModificationData item in m_toChangeLayer)
                             {
                                 item.spriteRenderer.sortingOrder = m_dropLayerOrder + item.modifier;
                             }

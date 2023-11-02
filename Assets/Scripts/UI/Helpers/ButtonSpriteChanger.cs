@@ -34,28 +34,32 @@ public class ButtonSpriteChanger : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     private void UpdateSprite()
     {
-        if (m_state == SpriteState.Clicked)
+        if (m_button.interactable)
         {
-            if (m_hoverState == HoverState.Hovering)
+            if (m_state == SpriteState.Clicked)
             {
-                m_image.sprite = m_hoverClicked;
+                if (m_hoverState == HoverState.Hovering)
+                {
+                    m_image.sprite = m_hoverClicked;
+                }
+                else
+                {
+                    m_image.sprite = m_Clicked;
+                }
             }
             else
             {
-                m_image.sprite = m_Clicked;
+                if (m_hoverState == HoverState.Hovering)
+                {
+                    m_image.sprite = m_hoverUnclicked;
+                }
+                else
+                {
+                    m_image.sprite = m_Unclicked;
+                }
             }
         }
-        else
-        {
-            if (m_hoverState == HoverState.Hovering)
-            {
-                m_image.sprite = m_hoverUnclicked;
-            }
-            else
-            {
-                m_image.sprite = m_Unclicked;
-            }
-        }
+
     }
 
     public void SetState(bool clicked)
@@ -63,7 +67,10 @@ public class ButtonSpriteChanger : MonoBehaviour, IPointerEnterHandler, IPointer
         m_state = !clicked ? SpriteState.Unclicked : SpriteState.Clicked;
         UpdateSprite();
     }
-
+    public void ClearHoverState()
+    {
+        m_image.sprite = m_Unclicked;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_hoverState = HoverState.Hovering;

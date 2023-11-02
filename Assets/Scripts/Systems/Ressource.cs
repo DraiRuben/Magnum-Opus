@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -95,15 +94,17 @@ public class Ressource : MonoBehaviour
             m_isFusionRoot = true;
         }
     }
-    private static List<Vector3Int> s_CloseTiles = new()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        new Vector3Int(1,0,0),
-        new Vector3Int(0,-1,0),
-        new Vector3Int(0,1,0),
-        new Vector3Int(-1,0,0),
-        new Vector3Int(-1,1,0),
-        new Vector3Int(-1,-1,0),
+        if (ExecutionControls.instance.m_isPlaying)
+        {
+            ObjectDraggable comp = collision.collider.GetComponent<ObjectDraggable>();
+            if (collision.collider.CompareTag("ArmGrabbable") || comp != null && comp.m_arm != null)
+            {
+                ErrorManager.instance.RegisterCollisionException(gameObject, collision.gameObject);
+            }
+        }
 
-    };
+    }
 
 }

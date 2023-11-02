@@ -19,15 +19,19 @@ public class ErrorManager : MonoBehaviour
     {
         m_errorMessage.transform.parent.gameObject.SetActive(true);
         m_errorMessage.text = message;
+        ExecutionControls.instance.InterruptPlay();
     }
     public void StopDisplayingError()
     {
         m_errorMessage.transform.parent.gameObject.SetActive(false);
-        foreach (GameObject errorSquare in m_instantiatedErrorSquares)
+        if (m_instantiatedErrorSquares != null && m_instantiatedErrorSquares.Count > 0)
         {
-            Destroy(errorSquare);
+            foreach (GameObject errorSquare in m_instantiatedErrorSquares)
+            {
+                Destroy(errorSquare);
+            }
+            m_instantiatedErrorSquares.Clear();
         }
-        m_instantiatedErrorSquares.Clear();
     }
     public void RegisterInvalidOrderException(Order order, ActionExecutor origin)
     {
@@ -68,8 +72,8 @@ public class ErrorManager : MonoBehaviour
     }
     public void RegisterCollisionException(GameObject Obj, GameObject Colliding)
     {
-        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, Obj.transform.root));
-        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, Colliding.transform.root));
+        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab,Obj.transform.position,Quaternion.identity, Obj.transform.root));
+        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, Colliding.transform.position, Quaternion.identity, Colliding.transform.root));
         DisplayError("Collision between these two objects is not allowed");
     }
     //not litteral children as in transform children, this is only a joke variable name
@@ -77,7 +81,7 @@ public class ErrorManager : MonoBehaviour
     {
         foreach (Ressource obj in problemChildren)
         {
-            Instantiate(m_errorPrefab, obj.transform);
+            m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, obj.transform));
         }
         DisplayError("Cannot grab a ressource with multiple arms");
     }

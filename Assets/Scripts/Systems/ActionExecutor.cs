@@ -15,13 +15,33 @@ public class ActionExecutor : MonoBehaviour
     private Quaternion newRotation;
 
     private float routineTimer;
+    private Order m_currentOrder;
 
     private Coroutine currentBehaviour;
+    private Transform m_currentlyChangingTransform;
     private void Awake()
     {
         m_draggable = GetComponent<ObjectDraggable>();
     }
+    private void FinishOrder()
+    {
+        if(m_currentOrder == Order.RotLeft ||  m_currentOrder == Order.RotRight
+            || m_currentOrder == Order.PivotLeft || m_currentOrder == Order.PivotRight)
+        {
+            oldRotation = newRotation;
+            m_currentlyChangingTransform.rotation = oldRotation;
+            Debug.Log(oldRotation.eulerAngles.z);
+        }
+        else if(m_currentOrder == Order.Extend || m_currentOrder == Order.Retract)
+        {
 
+        }
+        else if(m_currentOrder == Order.Plus || m_currentOrder == Order.Minus)
+        {
+
+        }
+        currentBehaviour = null;
+    }
     public void ExecuteOrder(Order order)
     {
         switch (order)
@@ -34,14 +54,11 @@ public class ActionExecutor : MonoBehaviour
                     //this means we tried starting a new rotation before the previous behaviour was finished,
                     //we need to instantly finish (not skip) the current one, then do the next one,
                     //this is used for when the user spams the next step button
-                    if (currentBehaviour != null)
-                    {
-                        oldRotation = newRotation;
-                        transform.parent.rotation = oldRotation;
-                        newRotation = Quaternion.Euler(0, 0, transform.parent.rotation.eulerAngles.z + 60f);
-                        routineTimer = 0f;
-                    }
-                    currentBehaviour ??= StartCoroutine(RotateRoutine(false, transform.parent));
+                    if (currentBehaviour != null) { FinishOrder(); }
+                        
+                    routineTimer = 0f;
+                    m_currentlyChangingTransform = transform.parent;
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(false, m_currentlyChangingTransform));
                 }
                 else
                 {
@@ -51,15 +68,11 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotRight:
                 if (m_canRotate)
                 {
-                    if (currentBehaviour != null)
-                    {
-                        oldRotation = newRotation;
-                        transform.parent.rotation = oldRotation;
-                        newRotation = Quaternion.Euler(0, 0, transform.parent.rotation.eulerAngles.z - 60f);
-                        routineTimer = 0f;
+                    if (currentBehaviour != null) { FinishOrder(); }
 
-                    }
-                    currentBehaviour ??= StartCoroutine(RotateRoutine(true, transform.parent));
+                    routineTimer = 0f;
+                    m_currentlyChangingTransform = transform.parent;
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(true, m_currentlyChangingTransform));
                 }
                 else
                 {
@@ -110,7 +123,11 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotRight:
                 if (m_hasHand)
                 {
-                    StartCoroutine(RotateRoutine(true, m_draggable.m_arm.m_contentPivot.transform));
+                    if (currentBehaviour != null) { FinishOrder(); }
+
+                    routineTimer = 0f;
+                    m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
+                    currentBehaviour??= StartCoroutine(RotateRoutine(true, m_draggable.m_arm.m_contentPivot.transform));
                 }
                 else
                 {
@@ -120,7 +137,11 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotLeft:
                 if (m_hasHand)
                 {
-                    StartCoroutine(RotateRoutine(false, m_draggable.m_arm.m_contentPivot.transform));
+                    if (currentBehaviour != null) { FinishOrder(); }
+
+                    routineTimer = 0f;
+                    m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(false, m_draggable.m_arm.m_contentPivot.transform));
                 }
                 else
                 {
@@ -148,18 +169,23 @@ public class ActionExecutor : MonoBehaviour
                 }
                 break;
         }
+        m_currentOrder = order;
     }
     private IEnumerator RotateRoutine(bool right, Transform _toRotate)
     {
         routineTimer = 0f;
         oldRotation = _toRotate.rotation;
-        newRotation = Quaternion.Euler(0, 0, _toRotate.rotation.eulerAngles.z + (right ? -60f : 60f));
-        while (routineTimer < s_cycleDuration)
+        newRotation = Quaternion.Euler(0, 0, _toRotate.rotation.eulerAngles.z + (right ? -60 : 60));
+        while (routineTimer < s_cycleDuration && ExecutionControls.instance.m_isPlaying)
         {
             if (!ExecutionControls.instance.m_isPaused)
             {
-                transform.parent.rotation = Quaternion.Slerp(oldRotation, newRotation, routineTimer / s_cycleDuration);
+                _toRotate.rotation = Quaternion.Slerp(oldRotation, newRotation, routineTimer / s_cycleDuration);
                 routineTimer += Time.deltaTime;
+            }
+            if(_toRotate != m_currentlyChangingTransform)
+            {
+                yield break;
             }
             yield return null;
         }

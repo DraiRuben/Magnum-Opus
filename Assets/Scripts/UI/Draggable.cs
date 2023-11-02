@@ -75,7 +75,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
         transform.parent.localScale = m_scaleOutOfUI;
         SaveTransform();
         m_sprite.sortingOrder = m_dragLayerOrder;
-        
+
         //so that the center doesn't snap to the mouse
         Vector2 offset = transform.parent.position - Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         while (s_isSomethingDragging)

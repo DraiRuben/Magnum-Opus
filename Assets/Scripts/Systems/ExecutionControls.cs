@@ -8,6 +8,8 @@ public class ExecutionControls : MonoBehaviour
 
     [SerializeField] private GameObject m_cycleHighlight;
     [SerializeField] private ButtonSpriteChanger m_playButtonSpriteManager;
+    [SerializeField] private ButtonSpriteChanger m_stepButtonSpriteManager;
+    [SerializeField] private ButtonSpriteChanger m_stopButtonSpriteManager;
     [SerializeField] private Button m_stopButton;
     [SerializeField] private Button m_playButton;
     [SerializeField] private Button m_stepButton;
@@ -37,11 +39,18 @@ public class ExecutionControls : MonoBehaviour
     }
     public void SetPlayButtonsInteractable(bool interactable)
     {
-        Button[] comps = GetComponentsInChildren<Button>();
-        foreach (Button button in comps)
-        {
-            button.interactable = interactable;
-        }
+        m_playButton.interactable = interactable;
+        m_stepButton.interactable = interactable;
+    }
+    public void InterruptPlay()
+    {
+        m_isPlaying = false;
+        m_isPaused = true;
+        m_playButton.interactable = false;
+        m_playButtonSpriteManager.ClearHoverState();
+        m_stepButton.interactable = false;
+        m_stepButtonSpriteManager.ClearHoverState();
+        m_stopButton.interactable = true;
     }
     public void NextStep()
     {
@@ -52,6 +61,7 @@ public class ExecutionControls : MonoBehaviour
             Selectable.s_CanPlayerSelect = false;
             TimelineManager.instance.UpdateLongestActionLine.Invoke();
         }
+        m_stopButton.interactable = true;
         m_isPaused = false;
         m_stepByStep = true;
         m_nextStep = true;
@@ -64,8 +74,10 @@ public class ExecutionControls : MonoBehaviour
         //TODO: call function to fill in empty spaces between instructions
         if (!m_stepByStep)
         {
-            m_isPaused = !m_isPaused;
+            m_isPaused = false;
         }
+        m_stopButton.interactable = true;
+        m_stopButtonSpriteManager.ClearHoverState();
         m_stepByStep = false;
         m_nextStep = true;
         MapManager.instance.m_unselectAll = true;
@@ -84,6 +96,11 @@ public class ExecutionControls : MonoBehaviour
         Selectable.s_CanPlayerSelect = true;
         m_playButtonSpriteManager.SetState(false);
         m_playRoutine = null;
+        m_playButton.interactable = true;
+        m_stepButton.interactable = true;
+
+        m_stopButton.interactable = false;
+        m_stopButtonSpriteManager.ClearHoverState();
     }
     private IEnumerator PlayRoutine()
     {
