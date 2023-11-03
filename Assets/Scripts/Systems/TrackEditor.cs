@@ -84,7 +84,7 @@ public class TrackEditor : Draggable
                 {
                     Vector3 currentWorldPos = MapManager.instance.m_placeableMap.CellToWorld(currentTilePos);
                     Vector3 newWorldPos = MapManager.instance.m_placeableMap.CellToWorld(newTilePos);
-                    Vector3Int NewToCurrentRelativePos = newTilePos - currentTilePos;
+                    Vector3Int NewToCurrentRelativePos = newTilePos - currentTilePos; //old & new not being set properly
 
                     //create new track
                     float angle = Mathf.Atan2(currentWorldPos.y - newWorldPos.y,currentWorldPos.x - newWorldPos.x) * Mathf.Rad2Deg;
