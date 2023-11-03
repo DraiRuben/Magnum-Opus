@@ -18,7 +18,7 @@ public class ObjectSlot : MonoBehaviour
     }
     public void TryRegenObject()
     {
-        if (m_canReplenish && transform.childCount < 2)
+        if (m_canReplenish && transform.parent.childCount < m_slotCount * m_slotMultiplier*2)
         {
             RegenObject();
         }

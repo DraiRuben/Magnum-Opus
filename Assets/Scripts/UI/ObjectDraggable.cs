@@ -43,7 +43,7 @@ public class ObjectDraggable : Draggable
         //finds if object was dropped out of bounds or not
         if (!UIDragHelper.s_isOnUIElement)
         {
-            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), 5000, ~LayerMask.GetMask("Mechanisms", "ArmGrabbable"));
+            RaycastHit2D Hit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue()), 5000, ~LayerMask.GetMask("Mechanisms", "ArmGrabbable", "Tracks"));
             if (Hit.collider != null && Hit.collider.gameObject.layer == LayerMask.NameToLayer("Map"))
             {
                 //finds closest tile and sets position of this object to that tile

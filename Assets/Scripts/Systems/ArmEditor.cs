@@ -19,7 +19,6 @@ public class ArmEditor : Draggable
         m_mediumArm.SetActive(m_armLength == 2);
         m_longArm.SetActive(m_armLength == 3);
 
-
     }
     private void OnDisable()
     {
