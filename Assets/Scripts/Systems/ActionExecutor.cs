@@ -15,6 +15,7 @@ public class ActionExecutor : MonoBehaviour
     private Quaternion newRotation;
 
     private float routineTimer;
+    private bool m_skip = false;
     private Order m_currentOrder;
 
     private Coroutine currentBehaviour;
@@ -22,25 +23,6 @@ public class ActionExecutor : MonoBehaviour
     private void Awake()
     {
         m_draggable = GetComponent<ObjectDraggable>();
-    }
-    private void FinishOrder()
-    {
-        if(m_currentOrder == Order.RotLeft ||  m_currentOrder == Order.RotRight
-            || m_currentOrder == Order.PivotLeft || m_currentOrder == Order.PivotRight)
-        {
-            oldRotation = newRotation;
-            m_currentlyChangingTransform.rotation = oldRotation;
-            Debug.Log(oldRotation.eulerAngles.z);
-        }
-        else if(m_currentOrder == Order.Extend || m_currentOrder == Order.Retract)
-        {
-
-        }
-        else if(m_currentOrder == Order.Plus || m_currentOrder == Order.Minus)
-        {
-
-        }
-        currentBehaviour = null;
     }
     public void ExecuteOrder(Order order)
     {
@@ -54,8 +36,9 @@ public class ActionExecutor : MonoBehaviour
                     //this means we tried starting a new rotation before the previous behaviour was finished,
                     //we need to instantly finish (not skip) the current one, then do the next one,
                     //this is used for when the user spams the next step button
-                    if (currentBehaviour != null) { FinishOrder(); }
-                        
+                    
+                    if (currentBehaviour != null) { m_skip = true; }
+
                     routineTimer = 0f;
                     m_currentlyChangingTransform = transform.parent;
                     currentBehaviour ??= StartCoroutine(RotateRoutine(false, m_currentlyChangingTransform));
@@ -68,7 +51,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotRight:
                 if (m_canRotate)
                 {
-                    if (currentBehaviour != null) { FinishOrder(); }
+                    if (currentBehaviour != null) { m_skip = true; }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = transform.parent;
@@ -123,11 +106,11 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotRight:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { FinishOrder(); }
+                    if (currentBehaviour != null) { m_skip = true; }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
-                    currentBehaviour??= StartCoroutine(RotateRoutine(true, m_draggable.m_arm.m_contentPivot.transform));
+                    currentBehaviour ??= StartCoroutine(RotateRoutine(true, m_draggable.m_arm.m_contentPivot.transform));
                 }
                 else
                 {
@@ -137,7 +120,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotLeft:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { FinishOrder(); }
+                    if (currentBehaviour != null) { m_skip = true; }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
@@ -151,6 +134,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Grab:
                 if (m_hasHand)
                 {
+                    if (currentBehaviour != null) { m_skip = true; }
                     StartCoroutine(GrabRoutine());
                 }
                 else
@@ -161,6 +145,7 @@ public class ActionExecutor : MonoBehaviour
             case Order.Drop:
                 if (m_hasHand)
                 {
+                    if (currentBehaviour != null) { m_skip = true; }
                     StartCoroutine(DropRoutine());
                 }
                 else
@@ -173,6 +158,7 @@ public class ActionExecutor : MonoBehaviour
     }
     private IEnumerator RotateRoutine(bool right, Transform _toRotate)
     {
+        yield return null;
         routineTimer = 0f;
         oldRotation = _toRotate.rotation;
         newRotation = Quaternion.Euler(0, 0, _toRotate.rotation.eulerAngles.z + (right ? -60 : 60));
@@ -182,8 +168,17 @@ public class ActionExecutor : MonoBehaviour
             {
                 _toRotate.rotation = Quaternion.Slerp(oldRotation, newRotation, routineTimer / s_cycleDuration);
                 routineTimer += Time.deltaTime;
+                routineTimer = Mathf.Clamp01(routineTimer);
+                if (m_skip)
+                {
+                    _toRotate.rotation = oldRotation = newRotation;
+                    m_skip = false;
+                    routineTimer = 0f;
+                    currentBehaviour = null;
+                    yield break;
+                }
             }
-            if(_toRotate != m_currentlyChangingTransform)
+            if (_toRotate != m_currentlyChangingTransform)
             {
                 yield break;
             }
@@ -193,6 +188,7 @@ public class ActionExecutor : MonoBehaviour
     }
     private IEnumerator GrabRoutine()
     {
+        yield return null;
         if (m_draggable.m_arm.m_contentPivot.transform.childCount <= 0)
         {
             Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
@@ -213,16 +209,15 @@ public class ActionExecutor : MonoBehaviour
     }
     private IEnumerator DropRoutine()
     {
+        yield return null;
         if (m_draggable.m_arm.m_contentPivot.transform.childCount > 0)
-        {
-            Vector3Int tilePosUnderHand = MapManager.instance.m_placeableMap.WorldToCell(m_draggable.m_arm.m_contentPivot.transform.position);
-            Vector3 worldTilePosUnderHand = MapManager.instance.m_placeableMap.CellToWorld(tilePosUnderHand);
-
+        {    
             Ressource comp = m_draggable.m_arm.m_contentPivot.transform.GetChild(0).GetComponent<Ressource>();
             if (comp != null)
             {
                 comp.transform.parent = null;
                 comp.m_isGrabbed = false;
+                comp.TryGetRecipient();
             }
         }
         yield return null;

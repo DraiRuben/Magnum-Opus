@@ -72,7 +72,7 @@ public class ErrorManager : MonoBehaviour
     }
     public void RegisterCollisionException(GameObject Obj, GameObject Colliding)
     {
-        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab,Obj.transform.position,Quaternion.identity, Obj.transform.root));
+        m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, Obj.transform.position, Quaternion.identity, Obj.transform.root));
         m_instantiatedErrorSquares.Add(Instantiate(m_errorPrefab, Colliding.transform.position, Quaternion.identity, Colliding.transform.root));
         DisplayError("Collision between these two objects is not allowed");
     }

@@ -156,7 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 12
-  m_toActivateOnDrop: []
   m_toChangeLayer:
   - spriteRenderer: {fileID: 1255417007013095278}
     modifier: 2
@@ -171,6 +170,7 @@ MonoBehaviour:
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
+  m_toActivateOnDrop: []
   m_arm: {fileID: 0}
   m_canProgram: 0
   m_dropLayerOrder: 3
@@ -318,7 +318,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 12
-  m_toActivateOnDrop: []
   m_toChangeLayer:
   - spriteRenderer: {fileID: 1255417007013095278}
     modifier: 2
@@ -333,6 +332,7 @@ MonoBehaviour:
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
+  m_toActivateOnDrop: []
   m_arm: {fileID: 0}
   m_canProgram: 0
   m_dropLayerOrder: 3
@@ -546,6 +546,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6744560888670807652}
     m_Modifications:
+    - target: {fileID: 3305278475675191042, guid: 65fcdb68ddcf9c9499eb3cc279ad9d4e, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6906379152115514304, guid: 65fcdb68ddcf9c9499eb3cc279ad9d4e, type: 3}
       propertyPath: m_Name
       value: Bond

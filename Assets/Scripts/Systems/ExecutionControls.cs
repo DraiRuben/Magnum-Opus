@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ExecutionControls : MonoBehaviour
@@ -15,12 +16,12 @@ public class ExecutionControls : MonoBehaviour
     [SerializeField] private Button m_stepButton;
 
     [HideInInspector] public bool m_isPaused = true;
+    [HideInInspector] public bool m_stepByStep = false;
+    [HideInInspector] public bool m_nextStep = false;
+    [HideInInspector] public bool m_isPlaying = false;
 
-    public bool m_isPlaying = false;
-    private bool m_stepByStep = false;
-    private bool m_nextStep = false;
 
-
+    [HideInInspector] public UnityEvent SkipToNextTrackEvent = new();
     private int m_currentCycle = 0;
     private Coroutine m_playRoutine;
 
@@ -65,6 +66,7 @@ public class ExecutionControls : MonoBehaviour
         m_isPaused = false;
         m_stepByStep = true;
         m_nextStep = true;
+        SkipToNextTrackEvent.Invoke();
         m_playRoutine ??= StartCoroutine(PlayRoutine());
         m_playButtonSpriteManager.SetState(false);
 
@@ -72,9 +74,14 @@ public class ExecutionControls : MonoBehaviour
     public void Play()
     {
         //TODO: call function to fill in empty spaces between instructions
-        if (!m_stepByStep)
+        
+        if (m_stepByStep)
         {
             m_isPaused = false;
+        }
+        else
+        {
+            m_isPaused = !m_isPaused;
         }
         m_stopButton.interactable = true;
         m_stopButtonSpriteManager.ClearHoverState();

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2395637639469854785}
   - component: {fileID: 2040008945179687933}
-  - component: {fileID: 2122930634990249021}
   - component: {fileID: 5604357877570430365}
   - component: {fileID: 7675735971673829465}
   - component: {fileID: 5156082364476865344}
+  - component: {fileID: 3894932035320965086}
   m_Layer: 6
   m_Name: ArmBase
   m_TagString: Mechanisms
@@ -88,67 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!60 &2122930634990249021
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216081292106683348}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.75, y: 0.56}
-    newSize: {x: 0.82, y: 0.94}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.12834147, y: 0.1661763}
-      - {x: 0.032323293, y: 0.25055623}
-      - {x: -0.042720646, y: 0.281548}
-      - {x: -0.19808234, y: 0.2773233}
-      - {x: -0.2616836, y: 0.24042198}
-      - {x: -0.35358638, y: 0.14}
-      - {x: -0.3764182, y: 0.08836892}
-      - {x: -0.36964658, y: -0.10590963}
-      - {x: -0.27444375, y: -0.23449601}
-      - {x: -0.1311491, y: -0.28596708}
-      - {x: 0.01429317, y: -0.26393977}
-      - {x: 0.102534615, y: -0.19519663}
-      - {x: 0.16368057, y: -0.103697956}
-      - {x: 0.1766248, y: -0.011479011}
-      - {x: 0.16665053, y: 0.08298415}
-      - {x: 0.15534794, y: 0.12265812}
-  m_UseDelaunayMesh: 0
 --- !u!114 &5604357877570430365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,8 +102,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 11
-  m_toActivateOnDrop:
-  - {fileID: 2646947512241578747}
   m_toChangeLayer:
   - spriteRenderer: {fileID: 710375540820848727}
     modifier: 1
@@ -180,6 +117,10 @@ MonoBehaviour:
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect:
   - {fileID: 8941088587234842511}
+  m_toActivateOnDrop:
+  - {fileID: 2646947512241578747}
+  m_toActivateWhenPlaced:
+  - {fileID: 1039964065083193510}
   m_arm: {fileID: 1039964065083193510}
   m_canProgram: 1
   m_dropLayerOrder: 5
@@ -227,6 +168,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!58 &3894932035320965086
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216081292106683348}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.096410945, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.22784854
 --- !u!1 &2646947512241578747
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +616,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8941088587234842511}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -712,13 +688,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 6
-  m_toActivateOnDrop: []
   m_toChangeLayer: []
   m_scaleOutOfUI: {x: 1.3, y: 1.3, z: 1.3}
   m_IsDraggable: 1
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
+  m_toActivateOnDrop: []
+  m_toActivateWhenPlaced: []
   m_armBase: {fileID: 5604357877570430365}
   m_smallArm: {fileID: 2040008945179687933}
   m_mediumArm: {fileID: 3563596360898840224}

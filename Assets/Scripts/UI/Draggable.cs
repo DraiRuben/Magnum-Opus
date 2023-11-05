@@ -8,8 +8,7 @@ using UnityEngine.InputSystem;
 public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] protected int m_dragLayerOrder = 3; //if it's set to -1 that means we don't change the layer when dragging
-    [SerializeField] protected List<GameObject> m_toActivateOnDrop;
-    [SerializeField] protected List<layerModificationData> m_toChangeLayer;
+    [SerializeField] protected List<LayerModificationData> m_toChangeLayer;
     [SerializeField] protected Vector3 m_scaleOutOfUI = Vector3.one;
     [SerializeField] protected bool m_IsDraggable = true;
     public bool m_isInUI = true;
@@ -22,6 +21,8 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
     protected Quaternion m_rotBeforeDrag;
     protected bool m_initialDrag = true;
     public List<GameObject> m_toActivateOnSelect;
+    public List<GameObject> m_toActivateOnDrop;
+    public List<MonoBehaviour> m_toActivateWhenPlaced;
     protected override bool GetIsInteractable()
     {
         return (m_canBeSelected && (!s_IsSomethingSelected || !s_isSomethingDragging))
@@ -49,6 +50,13 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
                 foreach (GameObject _toActivate in m_toActivateOnSelect)
                 {
                     _toActivate.SetActive(true);
+                }
+            }
+            if (m_toActivateWhenPlaced != null)
+            {
+                foreach (MonoBehaviour _toActivate in m_toActivateWhenPlaced)
+                {
+                    _toActivate.enabled = false;
                 }
             }
             StartCoroutine(Drag());
@@ -117,7 +125,7 @@ public abstract class Draggable : Selectable, IPointerEnterHandler, IPointerExit
     }
     protected abstract IEnumerator TryDrop();
     [Serializable]
-    public struct layerModificationData
+    public struct LayerModificationData
     {
         public SpriteRenderer spriteRenderer;
         public int modifier;

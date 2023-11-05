@@ -133,6 +133,8 @@ MonoBehaviour:
   m_nextTrack: {fileID: 0}
   m_previousTrack: {fileID: 0}
   m_isTrackEnd: 0
+  m_isRessourceTrack: 1
+  m_renderer: {fileID: 5416515414694271301}
 --- !u!1 &7135999567914600793
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +148,7 @@ GameObject:
   - component: {fileID: 8677572222519267012}
   m_Layer: 11
   m_Name: TrackBG
-  m_TagString: Untagged
+  m_TagString: Mechanisms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,13 +264,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.049999997, y: 0.47}
-      - {x: -0.06, y: 0.47}
-      - {x: -0.41, y: 0.26}
-      - {x: -0.41, y: -0.26}
-      - {x: -0.06, y: -0.47}
-      - {x: 0.06, y: -0.47}
-      - {x: 0.41, y: -0.26}
-      - {x: 0.41, y: 0.26}
-      - {x: 0.17999999, y: 0.39999998}
+    - - {x: 0.025714312, y: 0.43357152}
+      - {x: -0.0023215935, y: 0.44571438}
+      - {x: -0.3887501, y: 0.22357148}
+      - {x: -0.3857143, y: -0.23267865}
+      - {x: -0.01750005, y: -0.46089286}
+      - {x: 0.029642895, y: -0.43357146}
+      - {x: 0.3857143, y: -0.22660723}
+      - {x: 0.38875005, y: 0.21446438}
+      - {x: 0.15267858, y: 0.36357152}
   m_UseDelaunayMesh: 0

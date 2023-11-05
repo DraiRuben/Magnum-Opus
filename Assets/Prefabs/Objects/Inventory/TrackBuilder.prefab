@@ -27,7 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4060322892589031801}
   - {fileID: 1430645088776737346}
@@ -44,14 +44,14 @@ GameObject:
   - component: {fileID: 1430645088776737346}
   - component: {fileID: 235170374117363059}
   - component: {fileID: 6091972408640168880}
-  - component: {fileID: 5871466204604583844}
+  - component: {fileID: 6349025534281228372}
   m_Layer: 6
   m_Name: TrackEditor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1430645088776737346
 Transform:
   m_ObjectHideFlags: 0
@@ -81,21 +81,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 12
-  m_toActivateOnDrop: []
   m_toChangeLayer: []
   m_scaleOutOfUI: {x: 1, y: 1, z: 1}
   m_IsDraggable: 1
   m_isInUI: 1
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect: []
+  m_toActivateOnDrop: []
+  m_toActivateWhenPlaced: []
   m_draggable: {fileID: 4914374525768323137}
   m_trackPrefab: {fileID: 5497929336583422547, guid: 6d6ab4b534ee2cc4cbb246ff3a1e359f, type: 3}
   m_startingTracks: {fileID: 21300000, guid: 5abf055b099e4f54f9a4754933fa5e2f, type: 3}
-  m_end: {fileID: 21300000, guid: 9fd4f11bf405a2541bc07709b58bfcb4, type: 3}
+  m_end: {fileID: 21300000, guid: d927d34e0e9b6fa438fe0e39f6e0401b, type: 3}
   m_60: {fileID: 21300000, guid: aa1c81a83efe93649a0c527187146f53, type: 3}
   m_120: {fileID: 21300000, guid: d595f976dc1076f4992b282ee4408feb, type: 3}
   m_180: {fileID: 21300000, guid: 9fd4f11bf405a2541bc07709b58bfcb4, type: 3}
-  m_currentTrackSprite: {fileID: 0}
   m_tracks: []
 --- !u!212 &6091972408640168880
 SpriteRenderer:
@@ -147,16 +147,16 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!60 &5871466204604583844
-PolygonCollider2D:
+--- !u!58 &6349025534281228372
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2972026572382113769}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -181,39 +181,9 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5, y: 1.5}
-    newSize: {x: 0.84, y: 0.98}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.245294, y: 0.6499999}
-      - {x: -0.5915126, y: 0.30613443}
-      - {x: -0.5768907, y: -0.3768907}
-      - {x: -0.2330251, y: -0.63537824}
-      - {x: 0.29386556, y: -0.6061344}
-      - {x: 0.6061344, y: -0.23537813}
-      - {x: 0.6061345, y: 0.33773115}
-      - {x: 0.25, y: 0.66462195}
-    - - {x: -0.05, y: 0.15}
-      - {x: -0.25, y: 0.25}
-      - {x: -0.15, y: 0.05}
-      - {x: 0.15, y: 0.05}
-      - {x: 0.25, y: 0.25}
-      - {x: 0.05, y: 0.15}
-      - {x: 0.05, y: -0.15}
-      - {x: 0.25, y: -0.25}
-      - {x: 0.15, y: -0.05}
-      - {x: -0.15, y: -0.05}
-      - {x: -0.25, y: -0.25}
-      - {x: -0.05, y: -0.15}
-  m_UseDelaunayMesh: 0
+  m_Offset: {x: 0.015410557, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.1352639
 --- !u!1 &6968452670786702391
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,8 +213,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.27, y: 1.27, z: 1.27}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4957369729903144134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -298,7 +268,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &4914374525768323137
 MonoBehaviour:
@@ -314,7 +284,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_canBeSelected: 1
   m_dragLayerOrder: 11
-  m_toActivateOnDrop: []
   m_toChangeLayer:
   - spriteRenderer: {fileID: 6091972408640168880}
     modifier: 1
@@ -324,6 +293,10 @@ MonoBehaviour:
   m_staySelectedOnDrop: 0
   m_toActivateOnSelect:
   - {fileID: 2972026572382113769}
+  m_toActivateOnDrop: []
+  m_toActivateWhenPlaced:
+  - {fileID: 235170374117363059}
+  - {fileID: 235170374117363059}
   m_arm: {fileID: 0}
   m_canProgram: 0
   m_dropLayerOrder: 3

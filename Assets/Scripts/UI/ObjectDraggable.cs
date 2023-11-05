@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 public class ObjectDraggable : Draggable
 {
     public ArmEditor m_arm;
-    [SerializeField] public bool m_canProgram = false;
+    public bool m_canProgram = false;
 
     [SerializeField] private int m_dropLayerOrder = 3;
     public ObjectSlot m_slot;
@@ -16,7 +16,7 @@ public class ObjectDraggable : Draggable
     protected override IEnumerator Drag()
     {
         SetArmLayer(true);
-        SetOtherLayersDrag(true);
+        SetOtherLayersDrag();
         return base.Drag();
     }
     private void SetArmLayer(bool select)
@@ -26,11 +26,11 @@ public class ObjectDraggable : Draggable
             m_arm.GetComponent<SpriteRenderer>().sortingOrder = m_dragLayerOrder + (select ? 1 : -2);
         }
     }
-    private void SetOtherLayersDrag(bool drag)
+    private void SetOtherLayersDrag()
     {
         if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
         {
-            foreach (layerModificationData item in m_toChangeLayer)
+            foreach (LayerModificationData item in m_toChangeLayer)
             {
                 item.spriteRenderer.sortingOrder = m_dragLayerOrder + item.modifier;
             }
@@ -71,7 +71,7 @@ public class ObjectDraggable : Draggable
                         }
                     }
                 }
-                List<Collider2D> FilteredResult = results.Where(x => x.CompareTag("Mechanisms")).ToList();
+                List<Collider2D> FilteredResult = results.Where(x => x.CompareTag("Mechanisms") && x.transform.root != transform.root).ToList();
 
                 if (FilteredResult.Count <= 0)// we didn't find anything overlapping so we can place the thing down without resetting anything
                 {
@@ -85,7 +85,7 @@ public class ObjectDraggable : Draggable
                         }
                         if (m_toChangeLayer != null && m_toChangeLayer.Count > 0)
                         {
-                            foreach (layerModificationData item in m_toChangeLayer)
+                            foreach (LayerModificationData item in m_toChangeLayer)
                             {
                                 item.spriteRenderer.sortingOrder = m_dropLayerOrder + item.modifier;
                             }
@@ -95,6 +95,13 @@ public class ObjectDraggable : Draggable
                             foreach (GameObject _toActivate in m_toActivateOnDrop)
                             {
                                 _toActivate.SetActive(true);
+                            }
+                        }
+                        if(m_toActivateWhenPlaced != null)
+                        {
+                            foreach (MonoBehaviour _toActivate in m_toActivateWhenPlaced)
+                            {
+                                _toActivate.enabled = true;
                             }
                         }
                     }
@@ -111,13 +118,13 @@ public class ObjectDraggable : Draggable
                     {
                         m_sprite.sortingOrder = m_dragLayerOrder;
                         SetArmLayer(false);
-                        SetOtherLayersDrag(true);
+                        SetOtherLayersDrag();
                     }
                     else
                     {
                         m_sprite.sortingOrder = m_dropLayerOrder;
                         SetArmLayer(false);
-                        SetOtherLayersDrag(true);
+                        SetOtherLayersDrag();
                     }
 
                     m_initialDrag = true;
@@ -153,8 +160,7 @@ public class ObjectDraggable : Draggable
         if (m_initialDrag)
         {
             m_initialDrag = false;
-            transform.parent.position = m_posBeforeDrag;
-            transform.parent.rotation = m_rotBeforeDrag;
+            transform.parent.SetPositionAndRotation(m_posBeforeDrag, m_rotBeforeDrag);
             transform.parent.localScale = m_scaleBeforeDrag;
 
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,13 +6,14 @@ using UnityEngine;
 public class Ressource : MonoBehaviour
 {
     [SerializeField] private GameObject m_connector;
-    [SerializeField] private bool m_isFusionRoot;
     public List<Ressource> m_fusedNodes = new();
 
     [HideInInspector] public bool m_isGrabbed = false;
-
+    private bool m_skip = false;
     private List<GameObject> m_connectors = new();
-
+    private float lerpTimer = 0f;
+    private Vector3 previousTrackPos;
+    private Vector3 nextTrackPos;
     //checks recursively through the entire structure of fused connections to check if there already is one that's grabbed
     public void TryGetInvalidNodes(HashSet<Ressource> alreadyChecked, List<Ressource> problematicObjects, Ressource OriginNode)
     {
@@ -89,9 +91,7 @@ public class Ressource : MonoBehaviour
             foreach (Ressource _toReparent in m_fusedNodes)
             {
                 _toReparent.transform.parent = transform;
-                _toReparent.m_isFusionRoot = false;
             }
-            m_isFusionRoot = true;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -106,5 +106,55 @@ public class Ressource : MonoBehaviour
         }
 
     }
-
+    private IEnumerator MoveOnTrack(Track track)
+    {
+        previousTrackPos = track.transform.parent.position;
+        nextTrackPos = track.GetNextTrackPos();
+        
+        while(!m_isGrabbed)
+        {
+            if (!ExecutionControls.instance.m_isPaused)
+            {
+                transform.position = Vector3.Lerp(previousTrackPos, nextTrackPos, lerpTimer);
+                lerpTimer += Time.deltaTime / ActionExecutor.s_cycleDuration;
+                lerpTimer = Mathf.Clamp01(lerpTimer);
+                if ((!ExecutionControls.instance.m_stepByStep || ExecutionControls.instance.m_nextStep) && lerpTimer >= 1 || m_skip)
+                {
+                    if(track.m_nextTrack != null)
+                    {
+                        previousTrackPos = nextTrackPos;
+                        track = track.m_nextTrack;
+                        nextTrackPos = track.GetNextTrackPos();
+                        lerpTimer = 0f;
+                        m_skip = false;
+                    }
+                    else
+                    {
+                        ExecutionControls.instance.SkipToNextTrackEvent.RemoveListener(SkipToNextConveyor);
+                        yield break;
+                    }
+                }
+            } 
+            yield return null;
+        }
+    }
+    public void TryGetRecipient()
+    {
+        var HitInfo = Physics2D.Raycast(transform.position + Vector3.back * 5, Vector3.forward, 50f, LayerMask.GetMask("Tracks"));
+        if(HitInfo.collider != null)
+        {
+            ExecutionControls.instance.SkipToNextTrackEvent.AddListener(SkipToNextConveyor);
+            StartCoroutine(MoveOnTrack(HitInfo.collider.transform.parent.GetChild(0).GetComponent<Track>()));
+        }
+        /*HitInfo = Physics2D.Raycast(transform.position + Vector3.back * 5, Vector3.forward, 50f, LayerMask.GetMask("Validator"));
+        if (HitInfo.collider != null)
+        {
+            HitInfo.collider.transform.parent.GetChild(0).GetComponent<Validator>().TryValidate(this, m_fusedNodes);
+        }*/
+    }
+    private void SkipToNextConveyor()
+    {
+        m_skip = true;
+        transform.position = nextTrackPos;
+    }
 }

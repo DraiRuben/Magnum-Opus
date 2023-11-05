@@ -24,6 +24,8 @@ public class ArmEditor : Draggable
     {
         if (MapManager.instance != null && MapManager.instance.m_armZonesMap != null)
             MapManager.instance.m_armZonesMap.transform.position = new(0, 50000);
+
+        GetComponent<Collider2D>().enabled = false;
     }
     protected override IEnumerator TryDrop()
     {
@@ -40,6 +42,10 @@ public class ArmEditor : Draggable
         m_isSelected = true; //this puts the check to deselect to false,
                              //and since this editor is only accessible by selection, it just works
         base.Interact();
+    }
+    private void OnEnable()
+    {
+        GetComponent<Collider2D>().enabled = true;
     }
     protected override IEnumerator Drag()
     {

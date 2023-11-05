@@ -7,18 +7,13 @@ public class ObjectSlot : MonoBehaviour
     [SerializeField] private int m_slotCount = 1;
     [SerializeField] private int m_slotMultiplier = 1; //for ressource slots that have both the slot and the ressource
 
-    private SpriteRenderer m_sprite;
-    private void Awake()
-    {
-        m_sprite = GetComponent<SpriteRenderer>();
-    }
     private void Start()
     {
         RegenObject();
     }
     public void TryRegenObject()
     {
-        if (m_canReplenish && transform.parent.childCount < m_slotCount * m_slotMultiplier*2)
+        if (m_canReplenish && transform.parent.childCount < m_slotCount * m_slotMultiplier * 2)
         {
             RegenObject();
         }
@@ -27,7 +22,7 @@ public class ObjectSlot : MonoBehaviour
     {
         GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
 
-        setSlot(spawned);
+        SetSlot(spawned);
         Ressource comp = spawned.GetComponentInChildren<Ressource>();
         if (comp != null)
         {
@@ -44,7 +39,7 @@ public class ObjectSlot : MonoBehaviour
             }
         }
     }
-    private void setSlot(GameObject _toSet)
+    private void SetSlot(GameObject _toSet)
     {
         if (_toSet.transform.GetChild(0).TryGetComponent(out ActionDraggable actionDraggable))
         {
