@@ -71,7 +71,7 @@ public class ObjectDraggable : Draggable
                         }
                     }
                 }
-                List<Collider2D> FilteredResult = results.Where(x => x.CompareTag("Mechanisms") && x.transform.root != transform.root).ToList();
+                List<Collider2D> FilteredResult = results.Where(x => (x.CompareTag("Mechanisms") ||x.CompareTag("Validator")) && x.transform.root != transform.root).ToList();
 
                 if (FilteredResult.Count <= 0)// we didn't find anything overlapping so we can place the thing down without resetting anything
                 {

@@ -116,7 +116,7 @@ public class Ressource : MonoBehaviour
             if (!ExecutionControls.instance.m_isPaused)
             {
                 transform.position = Vector3.Lerp(previousTrackPos, nextTrackPos, lerpTimer);
-                lerpTimer += Time.deltaTime / ActionExecutor.s_cycleDuration;
+                lerpTimer += Time.deltaTime /( ActionExecutor.s_cycleDuration*1.01f);
                 lerpTimer = Mathf.Clamp01(lerpTimer);
                 if ((!ExecutionControls.instance.m_stepByStep || ExecutionControls.instance.m_nextStep) && lerpTimer >= 1 || m_skip)
                 {
@@ -146,11 +146,18 @@ public class Ressource : MonoBehaviour
             ExecutionControls.instance.SkipToNextTrackEvent.AddListener(SkipToNextConveyor);
             StartCoroutine(MoveOnTrack(HitInfo.collider.transform.parent.GetChild(0).GetComponent<Track>()));
         }
-        /*HitInfo = Physics2D.Raycast(transform.position + Vector3.back * 5, Vector3.forward, 50f, LayerMask.GetMask("Validator"));
+        HitInfo = Physics2D.Raycast(transform.position + Vector3.back * 5, Vector3.forward, 50f, LayerMask.GetMask("Mechanisms"));
         if (HitInfo.collider != null)
         {
-            HitInfo.collider.transform.parent.GetChild(0).GetComponent<Validator>().TryValidate(this, m_fusedNodes);
-        }*/
+            if (HitInfo.collider.CompareTag("Validator"))
+            {
+                HitInfo.collider.transform.parent.GetChild(0).GetComponent<Validator>().TryValidate(this, m_fusedNodes);
+            }
+            else if (HitInfo.collider.CompareTag("FusingCell"))
+            {
+                HitInfo.collider.GetComponent<FusionCell>().FillFusionStation(this);
+            }
+        }
     }
     private void SkipToNextConveyor()
     {

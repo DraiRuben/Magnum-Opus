@@ -142,7 +142,7 @@ public class ExecutionControls : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(ActionExecutor.s_cycleDuration);
+                    yield return new WaitForSeconds(ActionExecutor.s_cycleDuration*1.01f);
 
                 }
             }

@@ -37,7 +37,10 @@ public class ActionExecutor : MonoBehaviour
                     //we need to instantly finish (not skip) the current one, then do the next one,
                     //this is used for when the user spams the next step button
                     
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    {
+                        m_skip = true; 
+                    }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = transform.parent;
@@ -51,7 +54,10 @@ public class ActionExecutor : MonoBehaviour
             case Order.RotRight:
                 if (m_canRotate)
                 {
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    {
+                        m_skip = true; 
+                    }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = transform.parent;
@@ -106,7 +112,10 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotRight:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    {
+                        m_skip = true; 
+                    }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
@@ -120,7 +129,10 @@ public class ActionExecutor : MonoBehaviour
             case Order.PivotLeft:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    {
+                        m_skip = true; 
+                    }
 
                     routineTimer = 0f;
                     m_currentlyChangingTransform = m_draggable.m_arm.m_contentPivot.transform;
@@ -134,7 +146,10 @@ public class ActionExecutor : MonoBehaviour
             case Order.Grab:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    { 
+                        m_skip = true; 
+                    }
                     StartCoroutine(GrabRoutine());
                 }
                 else
@@ -145,7 +160,10 @@ public class ActionExecutor : MonoBehaviour
             case Order.Drop:
                 if (m_hasHand)
                 {
-                    if (currentBehaviour != null) { m_skip = true; }
+                    if (currentBehaviour != null) 
+                    {
+                        m_skip = true;
+                    }
                     StartCoroutine(DropRoutine());
                 }
                 else

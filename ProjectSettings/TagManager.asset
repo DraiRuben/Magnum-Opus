@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Mechanisms
   - ArmGrabbable
+  - Validator
+  - FusingCell
   layers:
   - Default
   - TransparentFX

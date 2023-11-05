@@ -6,6 +6,8 @@ public class RessourceSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject m_ressourcePrefab;
     public List<RessourceSpawner> m_fusedSpawners;
+    [HideInInspector] public Ressource m_spawned;
+    [HideInInspector] public bool m_hasSetConnections;
     private void Start()
     {
         //fuck unity for doing this crap
@@ -36,11 +38,21 @@ public class RessourceSpawner : MonoBehaviour
             {
                 ressourceSpawner.RegenRessource();
             }
+            SetConnections();
+        }
+    }
+    public void SetConnections()
+    {
+        m_hasSetConnections = true;
+        foreach(var _toConnect in m_fusedSpawners)
+        {
+            m_spawned.m_fusedNodes.Add(_toConnect.m_spawned);
+            if(!_toConnect.m_hasSetConnections) _toConnect.SetConnections();
         }
     }
     public void RegenRessource()
     {
-        Instantiate(m_ressourcePrefab, transform.position, Quaternion.identity, transform.parent);
+        m_spawned = Instantiate(m_ressourcePrefab, transform.position, Quaternion.identity, transform.parent).GetComponent<Ressource>();
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

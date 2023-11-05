@@ -23,21 +23,17 @@ public class ObjectSlot : MonoBehaviour
         GameObject spawned = Instantiate(m_objectPrefab, transform.parent);
 
         SetSlot(spawned);
-        Ressource comp = spawned.GetComponentInChildren<Ressource>();
-        if (comp != null)
+        
+        ObjectDraggable[] list = spawned.GetComponentsInChildren<ObjectDraggable>();
+        if (list.Length > 0)
         {
-            if (comp.m_fusedNodes.Count > 0)
+            foreach (ObjectDraggable obj in list)
             {
-                ObjectDraggable[] list = spawned.GetComponentsInChildren<ObjectDraggable>();
-                if (list.Length > 0)
-                {
-                    foreach (ObjectDraggable obj in list)
-                    {
-                        obj.m_slot = this;
-                    }
-                }
+                obj.m_slot = this;
             }
         }
+            
+        
     }
     private void SetSlot(GameObject _toSet)
     {
